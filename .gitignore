@@ -1,6 +1,8 @@
 # 데이터 폴더 제외
 19LLM/data/
 19LLM/glove_data/
+19LLM/__pycache__/
+19LLM/trainig_checkpoints/
 # Python cache
 __pycache__/
 *.pyc
@@ -17,3 +19,6 @@ __pycache__/
 # OS 파일
 .DS_Store
 Thumbs.db
+
+
+.gitignore
