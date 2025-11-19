@@ -1,0 +1,30 @@
+# 폰트크기 
+<span style="font-size:12px;">텍스트</span>
+# 폰트색
+<span style="color: blue;">텍스트</span>
+<span style="color: red;">빨간색</span>
+<span style="color: lightblue;">밝은 파란색</span>
+<span style="color: mediumseagreen;">중간 바다색</span>
+<span style="color: #FFD700;">금색 (Gold)</span>
+<span style="color: #32CD32;">라임 그린 (LimeGreen)</span>
+<span style="color: #8A2BE2;">블루 바이올렛 (BlueViolet)</span>
+<span style="color: Gold">
+<span style="color: pink">
+<span style="color: lightblue;">
+# 강조
+<p>이 문장에서 <mark>이 부분</mark>이 강조됩니다.</p>
+
+**굵게** : 중요한 단어
+*기울임* : 용어 설명
+~~취소선~~ : ~~잘못된 내용~~
+***굵게와 기울임*** : 매우 중요한 내용
+
+*
+` -> 두껍게
+
+문단띄기
+<br> 
+
+<span style="font-size:12px">
+
+##### ▶
