@@ -22,3 +22,10 @@ Thumbs.db
 
 
 .gitignore
+19LLM/results/checkpoint-500/config.json
+19LLM/results/checkpoint-500/model.safetensors
+19LLM/results/checkpoint-500/optimizer.pt
+19LLM/results/checkpoint-500/rng_state.pth
+19LLM/results/checkpoint-500/scheduler.pt
+19LLM/results/checkpoint-500/trainer_state.json
+19LLM/results/checkpoint-500/training_args.bin
