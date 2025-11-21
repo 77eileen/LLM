@@ -31,3 +31,9 @@ Thumbs.db
 19LLM/results/checkpoint-500/training_args.bin
 19LLM/results/
 19LLM/{C2857F97-6975-41D5-9909-A3EB11591652}.png
+
+# env 파일
+.env
+
+# gpt ai 관련
+19LLM/0_openai.ipynb

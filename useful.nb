@@ -1,5 +1,5 @@
 # 폰트크기 
-<span style="font-size:12px;">텍스트</span>
+<span style="font-size:13px;">텍스트</span>
 # 폰트색
 <span style="color: blue;">텍스트</span>
 <span style="color: red;">빨간색</span>
@@ -25,6 +25,14 @@
 문단띄기
 <br> 
 
-<span style="font-size:12px">
+<span style="font-size:13px">
+### <span style="color: Gold">
+
+<span style="font-size:13px">
+### <span style="color: pink">
+
+<span style="font-size:13px">
+### <span style="color: lightblue;">
+
 
 ##### ▶
