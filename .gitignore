@@ -37,3 +37,6 @@ Thumbs.db
 
 # gpt ai 관련
 19LLM/0_openai.ipynb
+20openai/KoAlpaca.jsonl
+20openai/KoAlpaca2.jsonl
+20openai/KoAlpaca_100.jsonl
