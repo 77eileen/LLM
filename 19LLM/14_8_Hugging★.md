@@ -125,8 +125,8 @@ print(outputs.logits)
 | 모델 유형                       | 구조 이름(Architecture) | 대표 모델(Model Examples)                        | 용도             | 흐름 요약                                                                               |
 | --------------------------- | ------------------- | -------------------------------------------- | -------------- | ----------------------------------------------------------------------------------- |
 | **Seq2Seq**                 | Encoder–Decoder     | BART, T5, Pegasus, mBART, FLAN-T5            | 요약, 번역, 조건부 생성 | [입력 문장] → 토크나이즈 → [인코더] → 숨은 상태(hidden context) → [디코더] → 다음 토큰 예측 반복 → 토큰 ID → 디코딩 |
-| **Autoregressive (GPT 계열)** | Decoder-only        | GPT-2, GPT-Neo, GPT-J, LLaMA, Mixtral, Gemma | 자유 생성, 채팅, 글쓰기 | [프롬프트] → 토크나이즈 → [디코더] → 다음 토큰 예측 반복 → 토큰 ID → 디코딩                                  |
-| **Encoder-only (BERT 계열)**  | Encoder-only        | BERT, RoBERTa, ELECTRA, DistilBERT           | 분류, QA, 태깅     | [입력 문장] → 토크나이즈 → [인코더] → hidden states → [CLS] → 선형 레이어 → 로짓 → softmax → 클래스 예측    |
+| **Autoregressive (GPT 계열)** | Decoder-only (단방향ㄴ)       | GPT-2, GPT-Neo, GPT-J, LLaMA, Mixtral, Gemma | 자유 생성, 채팅, 글쓰기 | [프롬프트] → 토크나이즈 → [디코더] → 다음 토큰 예측 반복 → 토큰 ID → 디코딩                                  |
+| **Encoder-only (BERT 계열)**  | Encoder-only  (양방향)       | BERT, RoBERTa, ELECTRA, DistilBERT           | 분류, QA, 태깅     | [입력 문장] → 토크나이즈 → [인코더] → hidden states → [CLS] → 선형 레이어 → 로짓 → softmax → 클래스 예측    |
 
 
 
