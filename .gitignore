@@ -34,6 +34,7 @@ Thumbs.db
 
 # env 파일
 .env
+*.env
 
 # gpt ai 관련
 19LLM/0_openai.ipynb
@@ -47,3 +48,15 @@ Thumbs.db
 20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/header.bin
 20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/length.bin
 20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/link_lists.bin
+20openai/chroma_db_advance_fusion/chroma.sqlite3
+20openai/chroma_db_advance_fusion/1b11650a-878a-49b5-8e63-40d4b9035b4e/data_level0.bin
+20openai/chroma_db_advance_fusion/1b11650a-878a-49b5-8e63-40d4b9035b4e/header.bin
+20openai/chroma_db_advance_fusion/1b11650a-878a-49b5-8e63-40d4b9035b4e/length.bin
+20openai/chroma_db_advance_fusion/1b11650a-878a-49b5-8e63-40d4b9035b4e/link_lists.bin
+20openai/chroma_db_advance_fusion/
+
+# bin, pkl 파일
+.bin
+.pkl
+*.bin
+*.pkl
