@@ -40,3 +40,10 @@ Thumbs.db
 20openai/KoAlpaca.jsonl
 20openai/KoAlpaca2.jsonl
 20openai/KoAlpaca_100.jsonl
+20openai/chunks_output_4_2_RAG2.pkl
+20openai/vectordb_config_4_4_RAG2.2.pkl
+20openai/chroma_db_reg2/chroma.sqlite3
+20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/data_level0.bin
+20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/header.bin
+20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/length.bin
+20openai/chroma_db_reg2/8358a3cd-0fda-43ab-b906-6afe8d1d42ec/link_lists.bin
