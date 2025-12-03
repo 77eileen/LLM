@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Networks AI Camp Project Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-robot text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl font-bold">SK Networks AI Camp Archive</h1>
+                        <p class="text-indigo-200 text-xs">Formatted by Umjunsik</p>
+                    </div>
+                </div>
+                <div class="relative w-full md:w-96">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fa-solid fa-search text-indigo-300"></i>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="프로젝트명, 키워드 검색 (예: 보험, 의료)"
+                        class="w-full py-2 pl-10 pr-4 bg-indigo-700 text-white placeholder-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:bg-indigo-600 transition-colors">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Stats -->
+        <div class="mb-6 flex justify-between items-end border-b border-slate-200 pb-2">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">프로젝트 목록</h2>
+                <p class="text-slate-500 text-sm mt-1">AI Camp 수료생들의 다양한 챗봇 및 RAG 서비스 모음</p>
+            </div>
+            <span class="text-sm font-medium bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                Total: <span id="count">0</span>
+            </span>
+        </div>
+
+        <!-- Grid -->
+        <div id="projectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be injected here by JS -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fa-regular fa-folder-open text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-500">검색 결과가 없습니다.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-sm">
+            <p>&copy; SK Networks Family AI Camp Project Links</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Source
+        const projects = [
+            { title: "대화 상대' 챗봇 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-3Team" },
+            { title: "특허법 관련", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-2Team" },
+            { title: "적합한 학과, 커리큘럼 소개", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-1Team" },
+            { title: "무인 화원 관련(추천, 판매, 관리)", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-5Team" },
+            { title: "공공주택 공고 기반 맞춤형 주거 정보", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-4Team" },
+            { title: "운전자 보험 약관 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-1Team" },
+            { title: "공시 문서 및 애널리스트 분석 리포트 기반의 투자 Q&A 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-5Team" },
+            { title: "우리은행 + 국민은행 대출 및 예적금 Q&A RAG 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-3Team" },
+            { title: "Ollama Gemma 기반 약품 정보 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-2Team" },
+            { title: "SK Magic Mall의 질의응답시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-4Team" },
+            { title: "육아 논문 데이터 기반 sLLM", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-4Team" },
+            { title: "운전 중 돌발상황 대처 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-5Team" },
+            { title: "법률 확인 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-3TEAM" },
+            { title: "관광지 정보를 알려주고 코스를 짜주는 챗봇 개발", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-3Team" },
+            { title: "Anki 기반 개인화 복습 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-4team" },
+            { title: "스티브 잡스에게 컨설팅 받는 듯 경험을 제공하는 컨설팅 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-1Team" },
+            { title: "청년과 신혼부부를 위한 주택청약 도우미 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-2Team" },
+            { title: "자동차 고장 및 이상 증상 진단 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-6Team" },
+            { title: "펫 보험 Q&A 챗봇 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN16-3rd-5Team" },
+            { title: "일반 상식과 최신 의학 논문 정보를 비교하여, 최신 상식의 과학적 오류를 자동으로 진단하는 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-1TEAM" },
+            { title: "AI 취업 도우미", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-2team" },
+            { title: "운전자 보험 약관 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-3team" },
+            { title: "기초 화장품 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-3Team" },
+            { title: "강의록 기반 AI 학습 도우미", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-1team" },
+            { title: "우울증 관련 정보 제공 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-4Team" },
+            { title: "기업 정보 분석 및 요약 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-2Team" },
+            { title: "삼성전자/LG전자 세탁기·건조기 매뉴얼 Q&A 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-3Team" },
+            { title: "AI 논술 첨삭 멘토봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-5Team" },
+            { title: "다이어트를 위한 식단 관리 및 운동 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-4Team" },
+            { title: "영양제를 추천하는 RAG + LLM 기반 AI 챗봇 및 추천 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-1Team" },
+            { title: "신용카드 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-2Team" },
+            { title: "축구선수 분석 및 & 회사 내부정보 기반 LLM시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-4TEAM" },
+            { title: "해설가 없이도 문화유산을 쉽고 즐겁게 탐방 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-5Team" },
+            { title: "저작권 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-6Team" },
+            { title: "ool Calling 기반의 지능형 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-4Team" },
+            { title: "초보 부모들의 육아를 도와주는 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-2Team" },
+            { title: "의료 관련 문서 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-5TEAM" },
+            { title: "반려동물 행동 분석 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-5Team" },
+            { title: "반려동물 입장 가능 카페, 장소 소개 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-1TEAM" },
+            { title: "GitHub 기반 코드 분석 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-3TEAM" },
+            { title: "전략적 ESG 인사이트를 제공하는 RAG 기반 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-2TEAM" },
+            { title: "교통사고 과실비율 산정 AI 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-1Team" },
+            { title: "여행자와 이민자를 위한 AI 기반 정보 탐색 웹 플랫폼", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-6Team" },
+            { title: "보드게임 룰 설명 & 맞춤형 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-3Team" },
+            { title: "화장품 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-4Team" },
+            { title: "LLM 기반 부트캠프 학습 Q&A 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-2Team" },
+            { title: "이혼 특화 AI 법률 상담 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-1Team" },
+            { title: "요리 레시피 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-5Team" },
+            { title: "연예 & 대중문화 정보 쳇봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-3Team" },
+            { title: "삼성전자 취업 컨설팅 AI 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-1Team" },
+            { title: "보험 약관 관련 쳇봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-4Team" },
+            { title: "여행 정보 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-2Team" },
+            { title: "박물관 도슨트 질의응답 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-5Team" },
+            { title: "대출관련 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-3Team" },
+            { title: "서울 맛집 정보 LLM 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN08-3rd-2Team" },
+            { title: "응급처치 정보 제공 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN08-3rd-1Team" },
+            { title: "지역별 숙박 정보 제공 및 맞춤 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN07-3rd-1Team" },
+            { title: "사용자 후기를 기억하는 QnA LLM 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN07-3rd-4Team" },
+            { title: "영어 학습 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN07-3rd-3Team" },
+            { title: "AI 기반의 대화형 사용자 매뉴얼", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN02-3rd-5Team" },
+            { title: "세법 질의응답 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-4Team" },
+            { title: "맛집 정보를 알려주는 어플리케이션", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-2Team" },
+            { title: "역사적 인물이나 사건에 대해 알려주는 교육 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-5team" },
+            { title: "청년정책 알려줘! 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-1Team" },
+            { title: "지능형 의료 상담 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-3team" },
+            { title: "운전자 보험 약관 질의응답 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-1TEAM" },
+            { title: "문서의 내용을 효율적으로 파악하고 검색할 수 있는 AI 기반 문서 Q&A 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-4TEAM" },
+            { title: "응급처치 대응 매뉴얼 조회 시스템 + 인근 병원 조회 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-2TEAM" },
+            { title: "컴퓨터 비교 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-2Team" },
+            { title: "도서 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-1Team" },
+            { title: "보험 약관 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-3Team" },
+            { title: "가상의 회사 신입사원을 위한 기업 내 정보 검색 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-4Team" }
+        ];
+
+        // Process Data to extract ID
+        projects.forEach(p => {
+            const parts = p.url.split('/');
+            p.teamId = parts[parts.length - 1];
+
+            // Simple logic to guess category icon (optional visual aid)
+            const titleLower = p.title.toLowerCase();
+            if (titleLower.includes('법') || titleLower.includes('특허') || titleLower.includes('저작권')) p.icon = 'fa-scale-balanced';
+            else if (titleLower.includes('의료') || titleLower.includes('약') || titleLower.includes('병원') || titleLower.includes('응급') || titleLower.includes('우울') || titleLower.includes('건강')) p.icon = 'fa-user-doctor';
+            else if (titleLower.includes('금융') || titleLower.includes('투자') || titleLower.includes('대출') || titleLower.includes('카드')) p.icon = 'fa-coins';
+            else if (titleLower.includes('보험')) p.icon = 'fa-shield-heart';
+            else if (titleLower.includes('여행') || titleLower.includes('관광') || titleLower.includes('맛집')) p.icon = 'fa-plane-departure';
+            else if (titleLower.includes('교육') || titleLower.includes('학습') || titleLower.includes('멘토') || titleLower.includes('논문')) p.icon = 'fa-graduation-cap';
+            else if (titleLower.includes('펫') || titleLower.includes('반려')) p.icon = 'fa-paw';
+            else if (titleLower.includes('채용') || titleLower.includes('취업')) p.icon = 'fa-briefcase';
+            else p.icon = 'fa-robot'; // Default
+        });
+
+        const grid = document.getElementById('projectGrid');
+        const countSpan = document.getElementById('count');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+
+        function render(data) {
+            grid.innerHTML = '';
+            countSpan.textContent = data.length;
+
+            if (data.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                data.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg p-6 border border-slate-100 shadow-sm transition-all duration-200 card-hover flex flex-col justify-between h-full';
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 truncate max-w-[70%]">
+                                    ${p.teamId}
+                                </span>
+                                <i class="fa-solid ${p.icon} text-slate-300"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2">${p.title}</h3>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <a href="${p.url}" target="_blank" class="flex items-center justify-center w-full px-4 py-2 bg-slate-800 text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">
+                                <i class="fa-brands fa-github mr-2"></i> View Repository
+                            </a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // Initial Render
+        render(projects);
+
+        // Search Logic
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = projects.filter(p =>
+                p.title.toLowerCase().includes(term) ||
+                p.teamId.toLowerCase().includes(term)
+            );
+            render(filtered);
+        });
+    </script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Networks AI Camp Project Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-robot text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl font-bold">SK Networks AI Camp Archive</h1>
+                        <p class="text-indigo-200 text-xs">Formatted by Umjunsik</p>
+                    </div>
+                </div>
+                <div class="relative w-full md:w-96">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fa-solid fa-search text-indigo-300"></i>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="프로젝트명, 키워드 검색 (예: 보험, 의료)"
+                        class="w-full py-2 pl-10 pr-4 bg-indigo-700 text-white placeholder-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:bg-indigo-600 transition-colors">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Stats -->
+        <div class="mb-6 flex justify-between items-end border-b border-slate-200 pb-2">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">프로젝트 목록</h2>
+                <p class="text-slate-500 text-sm mt-1">AI Camp 수료생들의 다양한 챗봇 및 RAG 서비스 모음</p>
+            </div>
+            <span class="text-sm font-medium bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                Total: <span id="count">0</span>
+            </span>
+        </div>
+
+        <!-- Grid -->
+        <div id="projectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be injected here by JS -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fa-regular fa-folder-open text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-500">검색 결과가 없습니다.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-sm">
+            <p>&copy; SK Networks Family AI Camp Project Links</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Source
+        const projects = [
+            { title: "대화 상대' 챗봇 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-3Team" },
+            { title: "특허법 관련", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-2Team" },
+            { title: "적합한 학과, 커리큘럼 소개", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-1Team" },
+            { title: "무인 화원 관련(추천, 판매, 관리)", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-5Team" },
+            { title: "공공주택 공고 기반 맞춤형 주거 정보", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN19-3rd-4Team" },
+            { title: "운전자 보험 약관 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-1Team" },
+            { title: "공시 문서 및 애널리스트 분석 리포트 기반의 투자 Q&A 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-5Team" },
+            { title: "우리은행 + 국민은행 대출 및 예적금 Q&A RAG 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-3Team" },
+            { title: "Ollama Gemma 기반 약품 정보 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-2Team" },
+            { title: "SK Magic Mall의 질의응답시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN18-3rd-4Team" },
+            { title: "육아 논문 데이터 기반 sLLM", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-4Team" },
+            { title: "운전 중 돌발상황 대처 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-5Team" },
+            { title: "법률 확인 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-3TEAM" },
+            { title: "관광지 정보를 알려주고 코스를 짜주는 챗봇 개발", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-3Team" },
+            { title: "Anki 기반 개인화 복습 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-4team" },
+            { title: "스티브 잡스에게 컨설팅 받는 듯 경험을 제공하는 컨설팅 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-1Team" },
+            { title: "청년과 신혼부부를 위한 주택청약 도우미 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-2Team" },
+            { title: "자동차 고장 및 이상 증상 진단 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN17-3rd-6Team" },
+            { title: "펫 보험 Q&A 챗봇 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN16-3rd-5Team" },
+            { title: "일반 상식과 최신 의학 논문 정보를 비교하여, 최신 상식의 과학적 오류를 자동으로 진단하는 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-1TEAM" },
+            { title: "AI 취업 도우미", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-2team" },
+            { title: "운전자 보험 약관 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-3team" },
+            { title: "기초 화장품 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-3Team" },
+            { title: "강의록 기반 AI 학습 도우미", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/skn15-3rd-1team" },
+            { title: "우울증 관련 정보 제공 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-4Team" },
+            { title: "기업 정보 분석 및 요약 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-2Team" },
+            { title: "삼성전자/LG전자 세탁기·건조기 매뉴얼 Q&A 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-3Team" },
+            { title: "AI 논술 첨삭 멘토봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-5Team" },
+            { title: "다이어트를 위한 식단 관리 및 운동 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-4Team" },
+            { title: "영양제를 추천하는 RAG + LLM 기반 AI 챗봇 및 추천 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN14-3rd-1Team" },
+            { title: "신용카드 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-2Team" },
+            { title: "축구선수 분석 및 & 회사 내부정보 기반 LLM시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-4TEAM" },
+            { title: "해설가 없이도 문화유산을 쉽고 즐겁게 탐방 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-5Team" },
+            { title: "저작권 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-6Team" },
+            { title: "ool Calling 기반의 지능형 RAG 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN13-3rd-4Team" },
+            { title: "초보 부모들의 육아를 도와주는 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-2Team" },
+            { title: "의료 관련 문서 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-5TEAM" },
+            { title: "반려동물 행동 분석 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-5Team" },
+            { title: "반려동물 입장 가능 카페, 장소 소개 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-1TEAM" },
+            { title: "GitHub 기반 코드 분석 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-3TEAM" },
+            { title: "전략적 ESG 인사이트를 제공하는 RAG 기반 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-2TEAM" },
+            { title: "교통사고 과실비율 산정 AI 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-1Team" },
+            { title: "여행자와 이민자를 위한 AI 기반 정보 탐색 웹 플랫폼", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-6Team" },
+            { title: "보드게임 룰 설명 & 맞춤형 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-3Team" },
+            { title: "화장품 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN11-3rd-4Team" },
+            { title: "LLM 기반 부트캠프 학습 Q&A 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-2Team" },
+            { title: "이혼 특화 AI 법률 상담 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-1Team" },
+            { title: "요리 레시피 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-5Team" },
+            { title: "연예 & 대중문화 정보 쳇봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-3Team" },
+            { title: "삼성전자 취업 컨설팅 AI 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN10-3rd-1Team" },
+            { title: "보험 약관 관련 쳇봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-4Team" },
+            { title: "여행 정보 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-2Team" },
+            { title: "박물관 도슨트 질의응답 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-5Team" },
+            { title: "대출관련 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN09-3rd-3Team" },
+            { title: "서울 맛집 정보 LLM 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN08-3rd-2Team" },
+            { title: "응급처치 정보 제공 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN08-3rd-1Team" },
+            { title: "지역별 숙박 정보 제공 및 맞춤 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN07-3rd-1Team" },
+            { title: "사용자 후기를 기억하는 QnA LLM 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN07-3rd-4Team" },
+            { title: "영어 학습 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN07-3rd-3Team" },
+            { title: "AI 기반의 대화형 사용자 매뉴얼", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN02-3rd-5Team" },
+            { title: "세법 질의응답 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-4Team" },
+            { title: "맛집 정보를 알려주는 어플리케이션", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-2Team" },
+            { title: "역사적 인물이나 사건에 대해 알려주는 교육 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-5team" },
+            { title: "청년정책 알려줘! 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-1Team" },
+            { title: "지능형 의료 상담 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN06-3rd-3team" },
+            { title: "운전자 보험 약관 질의응답 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-1TEAM" },
+            { title: "문서의 내용을 효율적으로 파악하고 검색할 수 있는 AI 기반 문서 Q&A 시스템", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-4TEAM" },
+            { title: "응급처치 대응 매뉴얼 조회 시스템 + 인근 병원 조회 서비스", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN05-3RD-2TEAM" },
+            { title: "컴퓨터 비교 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-2Team" },
+            { title: "도서 추천 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-1Team" },
+            { title: "보험 약관 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-3Team" },
+            { title: "가상의 회사 신입사원을 위한 기업 내 정보 검색 챗봇", url: "https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN04-3rd-4Team" }
+        ];
+
+        // Process Data to extract ID
+        projects.forEach(p => {
+            const parts = p.url.split('/');
+            p.teamId = parts[parts.length - 1];
+
+            // Simple logic to guess category icon (optional visual aid)
+            const titleLower = p.title.toLowerCase();
+            if (titleLower.includes('법') || titleLower.includes('특허') || titleLower.includes('저작권')) p.icon = 'fa-scale-balanced';
+            else if (titleLower.includes('의료') || titleLower.includes('약') || titleLower.includes('병원') || titleLower.includes('응급') || titleLower.includes('우울') || titleLower.includes('건강')) p.icon = 'fa-user-doctor';
+            else if (titleLower.includes('금융') || titleLower.includes('투자') || titleLower.includes('대출') || titleLower.includes('카드')) p.icon = 'fa-coins';
+            else if (titleLower.includes('보험')) p.icon = 'fa-shield-heart';
+            else if (titleLower.includes('여행') || titleLower.includes('관광') || titleLower.includes('맛집')) p.icon = 'fa-plane-departure';
+            else if (titleLower.includes('교육') || titleLower.includes('학습') || titleLower.includes('멘토') || titleLower.includes('논문')) p.icon = 'fa-graduation-cap';
+            else if (titleLower.includes('펫') || titleLower.includes('반려')) p.icon = 'fa-paw';
+            else if (titleLower.includes('채용') || titleLower.includes('취업')) p.icon = 'fa-briefcase';
+            else p.icon = 'fa-robot'; // Default
+        });
+
+        const grid = document.getElementById('projectGrid');
+        const countSpan = document.getElementById('count');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+
+        function render(data) {
+            grid.innerHTML = '';
+            countSpan.textContent = data.length;
+
+            if (data.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                data.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg p-6 border border-slate-100 shadow-sm transition-all duration-200 card-hover flex flex-col justify-between h-full';
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 truncate max-w-[70%]">
+                                    ${p.teamId}
+                                </span>
+                                <i class="fa-solid ${p.icon} text-slate-300"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2">${p.title}</h3>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <a href="${p.url}" target="_blank" class="flex items-center justify-center w-full px-4 py-2 bg-slate-800 text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">
+                                <i class="fa-brands fa-github mr-2"></i> View Repository
+                            </a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // Initial Render
+        render(projects);
+
+        // Search Logic
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = projects.filter(p =>
+                p.title.toLowerCase().includes(term) ||
+                p.teamId.toLowerCase().includes(term)
+            );
+            render(filtered);
+        });
+    </script>
+</body>
+
+</html>

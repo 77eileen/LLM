@@ -61,3 +61,4 @@ Thumbs.db
 *.bin
 *.pkl
 20openai/rr.md
+21project3/**/*.txt
