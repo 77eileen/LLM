@@ -64,3 +64,20 @@ Thumbs.db
 21project3/**/*.txt
 21project3/**/*.json
 21project3/crawling_2025-W45_20251203_145835.log
+
+# 테스트 파일
+20openai/13multimodal_food
+
+
+
+# ignore 확장자
+.jpg
+*.jpg
+.zip
+*.zip
+.pth
+.pt
+.json
+
+
+
