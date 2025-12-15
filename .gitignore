@@ -1,3 +1,31 @@
+#데이터 파일
+16machin-learning/data/movie_aclImdb/
+**/movie_aclImdb/
+17deep-learning/data/FashionMNIST/
+17deep-learning/data/
+17deep-learning/data/
+17deep-learning/cifar-10-batches-py/
+17deep-learning/cifar-10-python.tar.gz
+17deep-learning/cifar-10-batches-py/batches.meta
+17deep-learning/cifar-10-batches-py/data_batch_2
+17deep-learning/cifar-10-batches-py/data_batch_1
+17deep-learning/cifar-10-batches-py/data_batch_3
+17deep-learning/cifar-10-batches-py/data_batch_4
+17deep-learning/cifar-10-batches-py/data_batch_5
+17deep-learning/cifar-10-batches-py/readme.html
+17deep-learning/cifar-10-batches-py/test_batch
+17deep-learning/data/horse-or-human/
+17deep-learning/cifar.pth
+17deep-learning/hm.pth
+17deep-learning/bostonRegression.pth
+17deep-learning/resnet.pth
+17deep-learning/rnn_TSLA.pth
+17deep-learning/rnn.pth
+17deep-learning/*.pth
+project2/data/bank_churn_data.csv
+project2/data/netflix_customer_churn.csv
+
+
 # 데이터 폴더 제외
 19LLM/data/
 19LLM/glove_data/
@@ -65,8 +93,10 @@ Thumbs.db
 21project3/**/*.json
 21project3/crawling_2025-W45_20251203_145835.log
 
-# 테스트 파일
-20openai/13multimodal_food
+# 데이터 파일 및 샘플 그림 파일 등
+22multimodal/1mutilmodal_food
+22multimodal/2vit_image
+22multimodal/data
 
 
 
@@ -79,3 +109,37 @@ Thumbs.db
 .pt
 .json
 
+
+
+
+
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-40/config.json
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-40/model.safetensors
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-40/optimizer.pt
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-40/rng_state.pth
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-40/scheduler.pt
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-40/trainer_state.json
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-50/config.json
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-50/model.safetensors
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-50/optimizer.pt
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-50/rng_state.pth
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-50/scheduler.pt
+22multimodal/1multimodal_food/vit_finetuned_food101/checkpoint-50/trainer_state.json
+22multimodal/1multimodal_food/vit_finetuned_food101/final/config.json
+22multimodal/1multimodal_food/vit_finetuned_food101/final/model.safetensors
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765509822.playdata.5716.0
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765509973.playdata.5716.1
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765510005.playdata.5716.2
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765510228.playdata.5716.3
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765510325.playdata.5716.4
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765510402.playdata.5716.5
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765510576.playdata.5716.6
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765510833.playdata.5716.7
+22multimodal/1multimodal_food/vit_finetuned_food101/log/events.out.tfevents.1765511120.playdata.5716.8
+20openai/image-1.png
+20openai/image.png
+22multimodal/{9B1A87F1-02EF-43A9-B6AB-39C6496347D0}.png
+22multimodal/{637E965A-880E-443C-AF73-6F28B123D276}.png
+22multimodal/{5427141F-C0BD-4075-AF80-C91FA5E0DD09}.png
+22multimodal/{A267A43D-E7F2-4F05-AC87-A27AA0A5B939}.png
+22multimodal/{C60583D6-26F9-4738-AACE-32F796588F7A}.png
