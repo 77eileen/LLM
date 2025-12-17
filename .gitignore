@@ -97,8 +97,9 @@ Thumbs.db
 22multimodal/1mutilmodal_food
 22multimodal/2vit_image
 22multimodal/data
-
-
+24huggingface/models
+24huggingface/*.png
+24huggingface/sdxl-lora-output
 
 # ignore 확장자
 .jpg
