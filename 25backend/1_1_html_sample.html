@@ -1,0 +1,302 @@
+<!--  backend 구현할때 기본이 크롬임                           -->
+<!--  !입력하면 하기 기본 구조 나옴                            -->
+<!--  layout 잡아나갈때? div 사용, 모든 태그는 div 사용        -->
+<!-- 프로그램 개발시 프론트엔드가 백엔드 할때까지 기다리는게 아니라 기획 끝나고 
+    프로그램 상세설명할때 API FAST?를 작성해서 프론트엔드한테 전달
+    그래서 미리 프론트엔드도 개발할 수 있도록 함 
+    풀스텍 개발은 백엔드/프론트엔드 전부 다하는... -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1단계: HTML 문서의 구조 잡기</title>
+    <style>
+        body{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background-color: rgb(245, 227, 194);
+        }
+        .container{
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<!-- class는 스타일시트인데, 지시를 했지만 적용되는것은 없음 -->
+<!-- html은 오류가 나면 숨기고, 오류를 밝히지 않고, 실행되는것만 실행이됨. -->
+<!-- F12누르면 콘솔부분에 에러 표시 확인 / 소스는 f12 html 누르면 소스 보임 -->
+<!-- <br> 태그를 해야지 띄어쓰기가 되는데, 모든 문장 사이에 넣지는 않고, html태그를 이용함 -->
+    <div class = 'container'>  
+
+<!-- 1. 기본 문법  -->
+        <header>
+            <h1>1단계: HTML - 문서의 구조 잡기 (뼈대)</h1>
+            <p>웹 페이지의 논리적인 구조를 설계하고 백엔드와 연동하는 방법을 배웁니다.</p>
+            <!-- p 태그는 페이지로 보기. 마진이 있음. 단락을 구성해줌 -->
+        </header>
+        <!-- header 변화는 없으나, 뉴스형식 보여주기 위해서..??? -->
+    <nav>
+        <ul>
+            <li><a href="#semantic">시맨틱 태그</a></li>
+            <li><a href="#text">텍스트와 리스트</a></li>
+            <li><a href="#links">하이퍼링크와 이미지</a></li>
+            <li><a href="#form">폼 (백엔드 연동)</a></li>
+        </ul>
+    </nav>
+    <!-- li : dot 해줌 -->
+    <!-- 하이퍼링크 : <a href="#semantic"> ~~ </a> ===> ID가 senmantic으로 이동 -->
+
+
+<!-- ===== 2. 시맨틱 태그 ===== -->
+    <main>
+        <section id = "semantic">
+            <h2>시맨틱 태그 (Semantic Tags)</h2>
+            <p>의미 있는 태그를 사용하면 검색 엔진이 페이지 구조를 이해하고 유지보수가 쉬워집니다.</p>
+            <article>
+                <h3>시맨틱 태그 예제</h3>
+                <p>이것은 article 태그 내의 콘텐츠입니다. 독립적인 내용을 담을 때 사용합니다.</p>
+            </article>
+        </section>  
+
+
+<!-- ===== 3. 텍스트와 리스트 ===== -->
+        <section id="text">
+            <h2>텍스트와 리스트</h2>
+
+            <h3>제목 계층 (h1 ~ h6)</h3>
+            <h4>이것은 h4 태그입니다</h4>
+            <h5>이것은 h5 태그입니다</h5>
+            <h6>이것은 h6 태그입니다</h6>
+
+            <h3>순서 있는 리스트 (ol)</h3>
+            <ol>
+                <li>HTML 기초 배우기</li>
+                <li>CSS로 스타일하기</li>
+                <li>JavaScript 상호작용 추가</li>
+                <li>백엔드 연동하기</li>
+            </ol>
+            
+            <h3>순서 없는 리스트 (ul)</h3>
+                <ul>
+                    <li>쉬운 문법</li>
+                    <li>빠른 프로토타입</li>
+                    <li>크로스 플랫폼 호환</li>
+                    <li>SEO 친화적</li>
+                </ul>
+        </section>
+
+
+<!-- ===== 4. 하이퍼링크와 이미지 ===== -->
+        <section id="links">
+            <h2>하이퍼링크와 이미지</h2>
+
+            <h3>하이퍼링크 (a 태그)</h3>
+            <p>
+                <a href="https://www.google.com/" target="_blank">열기 (새 탭)</a>
+                <!-- target="_blank" ==> 새탭으로 열림 -->
+            </p>
+            <p>
+                <a href="https://github.com/pia222sk20/BackEnd" target="_blank"> GitHub로 이동</a>
+            </p>
+            <p>
+                <a href="#form">폼 섹션으로 이동 (페이지 내 링크)</a>
+            </p>
+                <h3>이미지 (img 태그)</h3>
+            <p>
+                <img src='https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
+                    alt="설명: 허깅페이지 아이콘"> 
+            </p>
+            <p>
+                <small>alt 속성은 이미지가 로드되지 않을 때 대체 텍스트로 표시되며 SEO와 접근성에 중요합니다.</small>
+            </p>
+        </section>
+
+
+
+<!-- ===== 5. 폼 (백엔드 연동 핵심) ===== -->
+        <section id="form">
+            <h2>폼 (Form) - 백엔드 연동 핵심</h2>
+            <p><strong>name 속성이 백엔드(Django)로 전달되는 핵심입니다!</strong></p>
+            <form method="POST" action="'/submit" style="background-color: rgb(241, 236, 172);" >
+                <strong>사용자 정보</strong>
+                
+                <!-- 텍스트 입력 -->
+                    <!-- <form> 태그 안에 있는 것들은 백엔드에 연동되는 것임. -->
+                        <!-- 방식은 post와 get 방식 2개가 있음 -->
+                        <!-- action="'/submit" 이라는 경로로 데이터를 전송 
+                            이게없으면, 현재는 내 컴퓨터에서 실행되고 있는 것.
+                            이걸 작성함으로써 요청방식을 문자열로 받아서 (ex. /register, /search, /logout 등을 사용자가 클릭하면 각각 1번, 2번, 3번 실행)
+                            post : 외부에 노출할거냐, 말거냐. POST는 비노출 GET은 브라우저 링크줄에 데이터가 노출됨
+                            get 방식은 화면을 간단히 체인지할 때 (ex. 카페사이트에서 링크에 page1 이렇게 기재되는 것)
+                            form 말고 java에서 ajox 를 할 수도 있음 
+                            form은 동기로..화면이 잠시 깜빡거림(깜빡거림이 인지할정도는 아님)==> 페이지가 완전히 바뀔때 사용??
+                            ajox는 비동기라서 태그정보를 받아서 동적으로 변경해줌==> 페이지 중 일부가 변경될때 사용
+                            streamlit은 비동기가 안됨..?! -->
+                        <!-- https://www.w3.org/ ==> html 표준규약??  -->
+                        <!-- html tutorial 도 있음 https://www.w3schools.com/html/ -->
+
+                    <!-- input 속성에서 required는 필수로 입력해야하는 것 -->
+                        <!-- id는 화면에서 구분하려고 하는것으로 중복되게 사용하면 안됨!
+                        name은 submit으로 서버에 전송이 되는데, 값만 받으면 이메일인지, 나이인지 모르기때문에, key value 형태로 서버에 전달됨
+                        key 가 name 속성에 해당됨. 그래서 name도 중요하고 중복사용하면 안됨 -->
+
+                    <!-- <style>은 2가지 방식이 있음
+                        개별로 정의할 수도 있고, 가장 상단에 style에 대한 정의?를 해놓고, class로 불러와서? 쓸수 있음.
+                        둘다 적용된 경우, 개별적으로 상세하게 해준게 우선적용되고, 두번째는 상단에 적용한것, 세번째는 다른 파일로? 빼서 적용한 것 -->
+                    
+                <div style="margin-bottom:15px ;">     
+                    <label for="username">이름</label>
+                    <input type="text"
+                            id="username"
+                            name="username"
+                            placeholder="이름을 입력하세요"
+                            required
+                            >
+                    <small>Django: request.POST['username']</small>
+                </div> 
+                <!-- 이메일 입력 -->
+                <div style="margin-bottom:15px ;"> 
+                    <label for="email">이메일</label>
+                    <input type="email"
+                            id="email"
+                            name="email"
+                            placeholder="이메일을 입력하세요"
+                            required
+                            >
+                    <small>Django: request.POST['email']</small>
+                </div>
+                <!-- 비밀번호 입력 -->
+                 <div style="margin-bottom:15px ;"> 
+                    <label for="password">비밀번호</label>
+                    <input type="password"
+                            id="password"
+                            name="password"
+                            placeholder="비밀번호를 입력하세요"
+                            required
+                            >
+                    <small>Django: request.POST['password']</small>  
+                </div>
+                <!-- 나이 입력 -->
+                 <div style="margin-bottom:15px ;"> 
+                    <label for="age">나이</label>
+                    <input type="number"
+                            id="age"
+                            name="age"
+                            min="1"
+                            max="100"
+                            placeholder="나이"
+                            >
+                    <small>Django: request.POST['age']</small>                    
+                </div>                                    
+                <!-- 라디오 버튼 (단일 선택) -->
+                 <div style="margin-bottom:15px ;"> 
+                    <label>성별</label>
+                    <input type="radio"
+                            id="male"
+                            name="gender"
+                            value="male"
+                            >
+                    <label for="male">남성</label>
+
+                    <input type="radio"
+                        id="female"
+                        name="gender"
+                        value="female"
+                        >
+                    <label for="female">여성</label>
+                    <small>Django: request.POST['gender']</small>                    
+                </div>    
+                <!-- 체크박스 (다중 선택) -->
+                 <div style="margin-bottom:15px ;"> 
+                    <label>관심분야</label>
+                    <input type="checkbox"
+                            id="python"
+                            name="interests"
+                            value="python"
+                            >
+                    <label for="python">Python</label>
+
+                    <input type="checkbox"
+                            id="web development"
+                            name="interests"
+                            value="web"
+                            >
+                    <label for="web development">web development</label>
+
+                    <input type="checkbox"
+                            id="AI/ML"
+                            name="interests"
+                            value="ai"
+                            >
+                    <label for="AI/ML">AI/ML</label>
+                    <small>Django: request.POST.getlist('interests')</small>                    
+                </div>  
+                <!-- 드롭다운 선택 (select) -->
+                <div style="margin-bottom: 15px;">
+                    <label for="country">국가:</label><br>
+                    <select id="country" name="country" required>
+                        <option value="">-- 선택하세요 --</option>
+                        <option value="korea">대한민국</option>
+                        <option value="japan">일본</option>
+                        <option value="china">중국</option>
+                        <option value="usa">미국</option>
+                    </select>
+                    <small>Django: request.POST['country']</small>
+                </div>
+
+                <!-- 텍스트 영역 (다중 라인) -->
+                <div style="margin-bottom: 15px;">
+                    <label for="message">메시지:</label><br>
+                    <textarea id="message" 
+                                name="message" 
+                                rows="4" 
+                                placeholder="자유롭게 입력하세요..."></textarea>
+                    <small>Django: request.POST['message']</small>
+                </div>
+
+                <!-- 날짜 입력 -->
+                <div style="margin-bottom: 15px;">
+                    <label for="birthdate">생년월일:</label><br>
+                    <input type="date" id="birthdate" name="birthdate">
+                    <small>Django: request.POST['birthdate']</small>
+                </div>
+
+                <!-- 시간 입력 -->
+                <div style="margin-bottom: 15px;">
+                    <label for="starttime">시작 시간:</label><br>
+                    <input type="time" id="starttime" name="starttime">
+                    <small>Django: request.POST['starttime']</small>
+                </div>
+                <!-- 버튼 만들어 제출 및 초기화하기 -->
+                <button type="submit">제출하기</button>
+                <button type="reset">초기화</button>
+            </form>
+            
+<!-- Django 백엔드 수신 예제:
+
+def submit(request):
+if request.method == 'POST':
+username = request.POST['username']
+email = request.POST['email']
+interests = request.POST.getlist('interests')
+# 데이터베이스 저장...
+return render(request, 'success.html')    
+
+백엔드를 만들면 상기와 같이 연결됨-->
+                </section>
+            </main>
+        </div>
+    </body>
+</html>
+
+
+
+

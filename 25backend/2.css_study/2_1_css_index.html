@@ -1,0 +1,187 @@
+<!-- css 파일에 디자인을 별도로 지정해서
+    <link rel="stylesheet" href="2_2_syles.css"> 
+    이렇게 태그작성해서 적용되도록 함  -->
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2단계: CSS 스타일과 레이아웃</title>
+    <link rel="stylesheet" href="2_2_syles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="mb-30">
+            <h1 id="main-title">2단계: CSS - 스타일과 레이아웃 (살붙이기)</h1>
+            <p>문서를 시각적으로 구성하고 배치하는 방법을 배웁니다.</p>
+        </header>
+
+        <main>
+            <!-- ===== 1. 선택자 ===== -->
+            <section id="selector-demo">
+                <h2>선택자 (Selectors)</h2>
+                <p>선택자는 CSS 규칙을 어떤 요소에 적용할지 결정합니다.</p>
+
+                <div class="card">
+                    <h3>1. 태그 선택자</h3>
+                    <p>모든 &lt;p&gt; 태그에 적용됩니다. 이 단락도 포함됩니다.</p>
+                    <p>이것도 태그 선택자의 영향을 받습니다.</p>
+                </div>
+
+                <div class="card">
+                    <h3>2. 클래스 선택자 (.)</h3>
+                    <p>
+                        <button class="primary-btn">Primary Button</button>
+                        <button class="secondary-btn">Secondary Button</button>
+                        <button class="warning-btn">Warning Button</button>
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>3. 아이디 선택자 (#)</h3>
+                    <p>아이디는 페이지에서 고유해야 합니다. 주로 특정 요소를 JavaScript로 조작할 때 사용됩니다.</p>
+                </div>
+
+                <div class="highlight">
+                    <strong>우선순위 (Specificity):</strong> 아이디 &gt; 클래스 &gt; 태그
+                </div>
+            </section>
+
+            <!-- ===== 2. 박스 모델 ===== -->
+            <section>
+                <h2>박스 모델 (Box Model)</h2>
+                <p>모든 HTML 요소는 박스 모델로 이루어져 있습니다: content → padding → border → margin</p>
+
+                <div style="text-align: center;">
+                    <div class="box-model">
+                        Content<br>
+                        (300x150)
+                    </div>
+                </div>
+
+                <div class="card mt-20">
+                    <h3>박스 모델 구성 요소</h3>
+                    <ul>
+                        <li><strong>Content:</strong> 실제 내용이 들어가는 영역</li>
+                        <li><strong>Padding:</strong> 내용과 테두리 사이의 안쪽 공간</li>
+                        <li><strong>Border:</strong> 테두리 (스타일, 색상, 굵기 지정 가능)</li>
+                        <li><strong>Margin:</strong> 테두리 바깥쪽 공간 (다른 요소와의 거리)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Box-sizing 팁</h3>
+                    <p><code>box-sizing: border-box;</code>를 사용하면 padding과 border가 width에 포함됩니다. 매우 유용합니다!</p>
+                    <pre>* {
+    box-sizing: border-box;
+}</pre>
+                </div>
+            </section>
+
+            <!-- ===== 3. 포지셔닝 ===== -->
+            <section>
+                <h2>포지셔닝 (Positioning)</h2>
+
+                <div class="card">
+                    <h3>1. Static (기본값)</h3>
+                    <div class="position-static">
+                        이것은 static 포지셔닝입니다. 일반적인 문서 흐름을 따릅니다.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>2. Relative</h3>
+                    <div class="position-relative">
+                        이것은 relative 포지셔닝입니다. 원래 위치를 기준으로 이동합니다. left: 20px로 오른쪽으로 20px 이동했습니다.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>3. Absolute</h3>
+                    <div class="position-absolute-container">
+                        부모 컨테이너 (position: relative)
+                        <div class="position-absolute">
+                            Absolute 자식
+                        </div>
+                    </div>
+                    <p><small>자식 요소가 부모 요소 기준으로 절대 위치로 배치됩니다.</small></p>
+                </div>
+
+                <div class="card">
+                    <h3>4. Fixed</h3>
+                    <p>우측 하단에 고정된 박스를 확인할 수 있습니다.</p>
+                </div>
+
+                <div class="success">
+                    <strong>실무 팁:</strong> Absolute와 Fixed는 문서 흐름을 벗어나므로 조심히 사용해야 합니다.
+                </div>
+            </section>
+
+            <!-- ===== 4. Flexbox ===== -->
+            <section>
+                <h2>Flexbox - 현대적 레이아웃 (실무에서 가장 많이 사용)</h2>
+
+                <div class="card">
+                    <h3>Flex 컨테이너와 아이템</h3>
+                    <pre>display: flex;
+justify-content: center;
+align-items: center;
+gap: 15px;</pre>
+                </div>
+
+                <div class="success">
+                    <strong>Flexbox 장점:</strong> 복잡한 레이아웃을 간단하게 만들 수 있습니다.
+                </div>
+            </section>
+
+            <!-- ===== 5. 반응형 디자인 ===== -->
+            <section>
+                <h2>반응형 디자인 (Responsive Design)</h2>
+                <p>미디어 쿼리를 사용하여 화면 크기에 따라 다른 스타일을 적용합니다.</p>
+
+                <div class="highlight">
+                    <strong>반응형 디자인의 핵심:</strong>
+                    <ul>
+                        <li>모바일 우선 설계 (Mobile-First)</li>
+                        <li>유연한 레이아웃 (Flexbox, Grid)</li>
+                        <li>미디어 쿼리로 화면 크기별 조정</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ===== 6. 색상 및 강조 ===== -->
+            <section>
+                <h2>색상 및 강조</h2>
+                
+                <div class="card">
+                    <div class="highlight">
+                        <strong>주의/알림:</strong> 이 메시지는 highlight 클래스를 사용합니다.
+                    </div>
+                    
+                    <div class="success">
+                        <strong>성공:</strong> 작업이 성공적으로 완료되었습니다!
+                    </div>
+                    
+                    <div class="error">
+                        <strong>오류:</strong> 오류가 발생했습니다!
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <p>CSS 완료</p>
+                <p style="font-size: 12px; margin-top: 20px; color: #999;">
+                    팁: 브라우저를 다시 크기 조정하여 반응형 레이아웃을 확인해보세요!
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <div class="position-fixed show">
+        고정된 위치의 박스<br>
+        <small>position: fixed</small>
+    </div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+/* 디자인 테스트 하는 방법:
+html창에서 f12 눌러서 Elements -> body -> style 에 들어가서 하기 지정한 옵션을
+체크박스로 선택/해제 하면서 디자인 확인 가능
+그리고 하기 옵션값을 f12에서 직접 타이핑으로 변경해서 확인가능 */
+/* 1_1_css_index.html에 있는 class= 나 id= 부분의 디자인을 본 파일에서 지정하여
+1_1_css_index.html 파일에 적용시킬 수 있음 
+클래스는 .클래스네임 , id는 #id네임 /
+
+
+
+/* 전체 초기화 영역 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;    /* width/height에 padding border포함; */
+}
+
+body{
+    font-family: sans-serif;
+    background-color: aliceblue;
+    color:rgb(42, 42, 44);
+}
+
+
+/* class */
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.box-model{
+    width: 300px;
+    height: 150px;
+    background-color: #4caf;
+    /* 박스모델: content -> padding -> border -> margin
+                 padding : 안쪽공간, border: 테두리, margin: 바깥쪽 공간 */
+    padding: 20px;
+    border: 5px solid #333 ;
+    margin: 20px;
+
+    /* 텍스트 설정 */
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+/* 선택자 */
+h1{
+    color:rgb(46, 46, 64);
+    margin-bottom: 30px;
+}
+
+h2{
+    color:#e91e63 ;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #e91e63;
+    padding-bottom: 10px;
+}
+
+h3{
+    color: rgb(227, 131, 232);
+    margin-top: 20px;
+}
+p{
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+
+.primary-btn{
+    background-color: rgb(227, 131, 232);
+    color:white;
+    padding:10px 20px; 
+    /* shorthand pattern 위,아래,좌,우 로 인식됨// 값을 2개만 주면, 10px:위,아래, 20px:좌,우 */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s ease;    ;
+}
+
+.primary-btn:hover{
+/* .primary-btn:hover 마우스가 위에 올라가면 어떻게 처리할거냐 */
+    background-color: #180310;
+}
+
+.secondary-btn{
+    background-color: rgb(227, 131, 232);
+    color:white;
+    padding:10px 20px; 
+    /* shorthand pattern 위,아래,좌,우 로 인식됨// 값을 2개만 주면, 10px:위,아래, 20px:좌,우 */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s ease;    ;
+}
+
+.secondary-btn:hover{
+/* .primary-btn:hover 마우스가 위에 올라가면 어떻게 처리할거냐 */
+    background-color: #180310;
+}
+
+.warning-btn{
+    background-color: rgb(245, 21, 25);
+    color:white;
+    padding:10px 20px; 
+    /* shorthand pattern 위,아래,좌,우 로 인식됨// 값을 2개만 주면, 10px:위,아래, 20px:좌,우 */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s ease;    ;
+}
+
+.warning-btn:hover{
+/* .primary-btn:hover 마우스가 위에 올라가면 어떻게 처리할거냐 */
+    background-color: #180310;
+}
+
+.card{
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.highlight{
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding:10px 10px;
+    /* padding 상기 값은 시계방향 (위, 오른쪽, 아래, 왼쪽)으로 값이 채워지고, 
+    없으면 서로 마주보고있는 대칭값으로 채워짐 */
+    margin: 10px;
+}
+
+.success{
+    background-color: #b1b2f5;
+    border-left: 4px solid #070bff;
+    padding: 10px;
+    margin: 10px;
+}
+
+.error{
+    background-color: #eca0a0;
+    border-left: 4px solid #f10202;
+    padding: 10px;
+    margin: 10px;
+}
+
+/* id */
+#main-title{
+    font-size : 2.5em; /* 부모요소의 font-size 기준으로 2.5배 크게해줌 */
+    color:#1a1a1a;
+    /* x-offset(오른쪽 음수면 왼쪽), y-offset(아래쪽 음수면 위쪽)
+    blur-radius(퍼짐정도) 색상 */
+    text-shadow: 2px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+#selector-demo{
+    padding: 50px;
+    background-color:#b1b2f5;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* 포지셔닝 */
+/* static 기본값 */
+.position-static{
+    position: static;
+    background-color: #c8e6;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    left:20px;   /* top left bottom right로 상대적으로 이동/ static은 이동안함 */
+}
+
+.position-relative{
+    position: relative;
+    background-color: #c8e6;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;  
+    left:20px;   /* top left bottom right로 상대적으로 이동!! (패딩과다름) / static은 이동안함 */
+}
+
+
+/* Absolute: 부모는 position이 relative/absolute/fixed 여야 한다
+자기를 바라보는 부모를 기준으로 해서 다시 위치를 선정...? hidden시킴??? (이미지 위에 라벨..) 겹치게보이게.? */
+.position-absolute-container{
+    position: relative;
+    padding: 10px;
+    height: 80px;
+    margin-bottom: 15px;
+    border: 2px dashed #fbc02d;
+    border-radius: 3px;
+}
+
+.position-absolute{
+    position: absolute;
+    background-color: #ffccbc;
+    padding:10px;
+    top:10px;
+    right:10px;
+    border-radius: 3px;
+}
+
+/* fixed 뷰포트(브라우징 되고 있는 화면) 기준 */
+.position-fixed{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f8bbd0;
+    padding:15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;  /* 기본숨김 */
+}
+
+/* .position-fixed.show 에서 .show는 파이썬처럼 객체는 아님!!!! 
+.은 클래스임.
+.positon-fixed 클래스이면서 .show 클래스인것.
+클래스 2개의 속성이 적용된것 */
+.position-fixed.show{
+    display: block;
+}
+
+
+/* 반응형 웹 디자인 형태 */
+/* 테블릿(768px 이하) */
+/* 하기 코드 내용: 현재 뷰포트 너비가 768보다 작으면, 
+ (모바일 576이하, 데스크탑 1024이사)
+ 하기와 같이 적용하라. 
+ lex: 0 0 calc(50% - 8px) 
+ 0: 남은 공간을 확장하지 않음. 
+ 0: 공간이 부족해서 줄어들지 않음
+ calc(50% - 8px) : 기본너비를 부모의 50%에서 8px를 뺀값
+ f12 눌러서 요소 앞에 클릭하면 모바일 버전으로 변경되서 볼수 있음 
+ */
+@media(max-width: 768px){
+    .response-item{
+        flex: 0 0 calc(50% - 8px) 
+    }
+}

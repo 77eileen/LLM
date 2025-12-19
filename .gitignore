@@ -100,6 +100,8 @@ Thumbs.db
 24huggingface/models
 24huggingface/*.png
 24huggingface/sdxl-lora-output
+25backend/3.bootstrap/bootstrap-4.0.0_samples
+25backend/3.bootstrap/sample_burger_original
 
 # ignore 확장자
 .jpg
