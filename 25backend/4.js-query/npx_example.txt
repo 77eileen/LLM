@@ -1,0 +1,11 @@
+1. 터미널에서 하기 실행
+npx create-react-app react-crud
+
+2. 이렇게 출력 나오면
+Happy hacking!
+
+경로 변경해주고
+C:\00AI>cd C:\00AI\react-crud
+
+3. 터미널에서 실행
+npm start

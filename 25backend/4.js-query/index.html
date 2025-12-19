@@ -1,0 +1,73 @@
+<!-- https://jscompress.com/ -->
+<!-- https://releases.jquery.com/ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js+jquery</title>
+    <!-- css -->
+    <link href="./css/style.css" rel="stylesheet">
+    <!-- jquery CDN (인터넷으로 가져오는 방식)-->
+    <script src = "https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- local js -->
+    <script src = "./js/main.js"></script>
+    <style>
+        hr{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Javascript + Jquery</h1>
+        <button id="btn">클릭하세요</button>
+        <p id="text">대기중</p>
+
+        <input type="checkbox" id="checkall">전체선택
+        <hr>
+        <input type="checkbox" class="chk">항목1
+        <input type="checkbox" class="chk">항목2
+        <input type="checkbox" class="chk">항목3
+        <p>선택된 항목: <span id="count">0</span></p>
+        <hr>
+        <table>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="tchk"></td>
+                    <td>홍길동</td>
+                    <td>20살</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="tchk"></td>
+                    <td>유관순</td>
+                    <td>25살</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="tchk"></td>
+                    <td>이순신</td>
+                    <td>30살</td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="deleteBtn">선택 삭제</button>
+        <hr>
+        <button id="saveBtn">저장</button>
+        
+        <hr>
+        <input type="'text" id="username">
+        <span id="msg"></span>
+        <hr>
+        <p>동적 이벤트</p>
+        <button id="addBtn">항목추가</button>
+        <div id="list">
+            <div class='item'>
+                기존항목
+                <span class="remove">삭제</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

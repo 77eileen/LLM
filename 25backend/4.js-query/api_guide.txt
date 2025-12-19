@@ -1,0 +1,7 @@
+API 명세서
+
+GET     /api/users          목록조회
+POST    /api/users          사용자추가
+PUT     /api/users/{id}     사용자 수정
+DELETE  /api/users/{id}     단일 사용자 삭제
+DELETE  /api/users          다중 삭제

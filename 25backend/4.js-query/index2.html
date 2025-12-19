@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- css -->
+    <link href="./css/style.css" rel="stylesheet">
+    <!-- jquery CDN (인터넷으로 가져오는 방식)-->
+    <script src = "https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- local js -->
+    <script src = "./js/main2.js"></script>
+    <style>
+        hr{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table border="1" width="600">
+                <thead>
+                    <tr>
+                        <th><input type='checkbox' id='checkall'></input></th>
+                        <th>ID</th>            
+                        <th>이름</th>
+                        <th>이메일</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable">
+                </tbody>
+        </table>
+            <p>
+            <button id="addBtn">ADD</button>
+            <button id="deleteBtn">Selected Remove</button>
+            </p>
+    </div>
+</body>
+</html>
