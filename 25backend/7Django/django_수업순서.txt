@@ -1,0 +1,130 @@
+2025.12.24.  =====7Django==========================
+
+1. Django 프로젝트 생성
+2. 앱 생성
+3. settings.py 에 생성된 앱을 초기화하고 templates 경로를 입력
+4. templastes 폴더를 BASE_DIR 에 생성
+5. 모델 설계 및 생성
+6. admin 패널 생성
+7 관리자 모드에서 샘플데이터 추가
+8 url 생성
+9 url요청이 오면 반응할 views 의 함수와 클래스 방식으로 생성
+10 views의 각 기능을 비지니스로직에 따라 구현
+
+============================================
+*JPA
+*mybatis
+============================================
+
+1
+django-admin startproject [프로젝트명] .    --> 메인
+django-admin startproject myproject .  --> . 붙여야지 폴더에 폴더로 안만들어지고 폴더 하나에 만들어짐
+
+
+2
+python manage.py migrate
+
+
+3
+django-admin startapp [어플리케이션명]    --> 메인에 종속된 app(앱)
+python manage.py startapp blog
+python manage.py startapp page
+
+4
+myproject/settings.py
+INSTALLED_APPS 에 추가함
+    'blog.apps.BlogConfig',
+TEMPLATES 의 DIR 수정 후
+7Django에 templates 폴더 만들기
+
+
+5
+blog/model.py 
+모델 만들기 (모델 --> DB.. 제약조건 등 만드는 과정)
+
+6
+모델 갱신 후 
+python manage.py makemigrations
+
+
+7
+python manage.py createsuperuser  ---> 슈퍼유저 만들기 
+엔터 후
+Username : 
+email: (작성안해도됨)
+pw: (작성해도 터미널에 안보이는게 정상)
+
+
+8. 
+blog/admin.py 파일에서, 
+모델에서 작성한 클래스들의 admin을 작성
+
+9.
+python manage.py makemigrations
+python manage.py migrate 
+
+
+10.
+python manage.py runserver
+http://127.0.0.1:8000/admin/
+샘플 작성하기
+
+11. 
+경로세팅
+myproject/urls.py
+urlpattenrs 설정
+
+12.
+blog 앱에서 urls.py 파일 만들고 path 작성하기
+
+13.
+blog/urls.py의 urlpatterns 에서 만든걸 views.py에 만들기
+함수 및 class 방식으로 생성
+
+
+14.
+template 폴더에 blog 폴더 만들고 ~.html 만들기 (views.py 에 template name 과 동일한 html생성)
+post_list.html 
+post_form
+post_detail
+post_confirm_delete
+dashboard
+
+15.
+url 잘 접속되는지 확인 (urls.py 에 기재된 함수를 다 실행해보기)
+http://127.0.0.1:8000/blog/
+http://127.0.0.1:8000/blog/1/
+http://127.0.0.1:8000/blog/2/ ==> page not found 정상
+http://127.0.0.1:8000/blog/1/
+http://127.0.0.1:8000/blog/create/
+http://127.0.0.1:8000/blog/1/edit
+http://127.0.0.1:8000/blog/1/comment ===> 실행시 http://127.0.0.1:8000/blog/1/ 로 이동 (redirection이 진행됨)
+	blog/views.py 함수 확인
+	def add_comment(request, pk):
+
+http://127.0.0.1:8000/blog/1/bookmark
+
+http://127.0.0.1:8000/blog/1/category
+http://127.0.0.1:8000/blog/search/
+http://127.0.0.1:8000/blog/dashboard/
+
+16.
+template/base.html  생성 (강사님 주신 파일 복붙)
+
+17.
+다른 html 에서 bast.html을 가져올수 있음
+{% extends 'blog/base.html' %}
+{% block title %}Post List - Blog{% endblock %}
+{% block content %}
+~~~~~~~
+{% endblock %}
+
+
+18
+db 삭제
+migrate 실행
+runserver
+
+19
+127.0.0.1:8000
+메인페이지 admin, blog, 글생성하는 버튼 만들어보기
