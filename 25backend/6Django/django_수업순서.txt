@@ -1,0 +1,113 @@
+django-admin startproject [메인프로젝트명] .
+--> 프로젝트 뼈대 만들기 (설정파일, 서버설정, 공통설정 담당)
+
+========================================================
+
+conda install django -y
+django-admin startproject [프로젝트명] .    --> 메인
+django-admin startapp [어플리케이션명]    --> 메인에 종속된 app(앱)
+
+서버실행
+python manage.py runserver
+
+슈퍼유저
+python manage.py migrate                 - 필요한 데이터베이스 구조를자동생성
+python manage.py createsuperuser
+
+========================================================
+1. 
+터미널에서
+conda install django pillow -y
+
+
+2.
+터미널에서
+django-admin startproject [메인프로젝트명] .    ------> 메인
+django-admin startproject mysite .    
+
+
+3.
+터미널에서 : 서버실행
+python manage.py runserver
+
+
+4. 
+터미널에서 : (새로운 앱? 뭐? 등록되면 migrate 실행)
+python manage.py migrate      --->  필요한 데이터베이스 구조를 자동 생성  
+
+
+5.
+터미널에서
+python manage.py createsuperuser 
+엔터 후
+Username : 
+email: (작성안해도됨)
+pw: (작성해도 터미널에 안보이는게 정상)
+
+python manage.py runserver
+사이트 접속해서 http://127.0.0.1:8000/admin/
+여기로 들어가서 상기 id, pw 로 접속
+
+
+6
+터미널에서
+django-admin startapp [어플리케이션명] ---> 메인에 종속된 app(앱)
+django-admin startapp blog
+
+
+7
+mysite>urls.py 에서
+urlpatterns 추가 기재 하고 저장 ---> views.index 없다고 에러 터미널에 뜸
+    path('blog/', views.index),
+
+
+8. 
+상기 blog/ views.index 컨트롤 클릭해서 views.py 열리면, 코드 작성 후 저장
+--> 사이트 새로고침하면 page not found 에서 작성된 문자로 바뀜
+
+9. 
+blog 에서 urls.py 만들기
+
+10.
+blog 에서 models.py 에서 class 작성하기
+class Question(models.Model):
+    subject = models.CharField(max_length=200)
+    content = models.TextField()
+    create_at = models.DateTimeField()
+    def __str__(self):
+        return self.subject
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE) # on_delete=models.CASCADE 부모지워지면, 자식도 지워짐
+    content = models.TextField()
+    create_at = models.DateTimeField()
+
+
+
+
+11.
+mysite/settings.py 에서
+초기화 앱에 하기 사항 추가하기
+INSTALLED_APPS = 
+    'blog.apps.BlogConfig',
+==> 이거 하고 나면 항상 터미널에 migrate 해주기 (python manage.py migrate)
+==> 빨간색 글 안내뜨면 똑같이 해주기  python manage.py makemigrations 
+
+12
+blog/admin.py
+
+13.
+blog/views.py
+
+14.
+mysite/settings.py 에 TEMPLATES 변경
+        'DIRS': [BASE_DIR/ 'templates'],
+==> 6Django 폴더에서 templates 폴더 만듬
+==> templates/blog 폴더를 만들고 question_list.html 만듬
+
+
+================================================
+15
+blog/urls.py
+여기서 별칭을 지정하고 나서 path에서
+question_list.html 에서 url을 별칭 넣어서 할 수 있음

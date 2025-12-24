@@ -1,0 +1,56 @@
+1
+django-admin startproject [프로젝트명] .    --> 메인
+django-admin startproject config .
+
+2
+dir/w   ---> 만들어진것들 확인 (폴더확인)
+
+3
+python manage.py migrate
+
+4
+python manage.py runserver
+
+5
+python manage.py createsuperuser  ---> 슈퍼유저 만들기 --> 
+
+6
+python manage.py runserver --> http://127.0.0.1:8000/admin/login/?next=/admin/  --> 확인하기
+
+7
+django-admin startapp [어플리케이션명]    --> 메인에 종속된 app(앱)
+python manage.py startapp blog
+python manage.py startapp pages
+
+8.
+config/settings.py
+INSTALLED_APPS 에 2개 추가함
+    'blog.apps.BlogConfig',
+    'pages.apps.PagesConfig',
+
+
+9.
+경로세팅
+config/urls.py
+urlpattenrs 설정
+
+10.
+각 앱에서 urls.py 파일 만들어주기
+
+11. 
+만든 urls.py 의 urlpatterns에 따라서 veiws.py 에서 함수 만들어주기
+
+12.
+config/settings.py
+TEMPLATES 의 DIR 수정 후
+6Django_test1 에 templates 폴더 만들고 - blog 폴더 만들고 - post_list.html 만들기
+
+13.
+blog/model.py 
+모델 만들기 만들기
+
+14.
+
+
+
+

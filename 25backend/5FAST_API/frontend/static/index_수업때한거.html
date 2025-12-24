@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>할일(Todo)</title>
+
+    <!--외부 라이브러리 및 파일 로드, 웹사이트에서 jquery 검색 -> cdm -> 가장 최신버전의 minified-->
+    <link rel="stylesheet" href="/static/style.css">  
+    <script src="/static/app.js"></script>  
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
+
+</head>
+<body>
+    <h1>할일 목록</h1>
+
+    <!--할일 추가를 위한 입력 폼-->
+    <form method="post" id="todoForm">  
+        <p><input type="text" id="todoTitle"   placeholder="제목입력"></p>
+        <p><input type="text" id="todoDescription"  placeholder="설명을 입력하세요"></p>
+        <button type="submit">등록</button>
+        <button type="reset">초기화</button>
+    </form>
+
+    <!-- 할일 목록이 동적으로 표시될 영역-->
+    <!-- todo목록 -->
+     <div id="todoList"> <!--서버에서 받아온 할일 목록이 표시될 장소-->
+        <!-- jquery로 동적생성 -->
+     </div>
+</body>
+</html>

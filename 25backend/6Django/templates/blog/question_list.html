@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문목록</title>
+    <link rel = 'stylesheet' href="{% static 'style.css' %}">
+</head>
+<body class="container">
+    <h1>질문목록</h1>
+    <!-- {#  #} 동적으로 값을 줄수 있음 --> 
+    <!-- { }  하나는 조건문 순환문할 때 / 변수할때는 {{  이렇게 두개 작성 -->
+    {% if question_list %}
+        <ul>    
+        {% for question in question_list %}
+            <li>
+                <!-- <a href="/blog/{{question.id}}">{{ question.subject }}</a> -->
+                <a href ="{% url 'blog:detail' question.id %}">{{ question.subject }}</a>  <!-- detail 이라는 별칭을 가진..-->
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p> 질문이 없습니다. </p>
+    {% endif %}  
+</body>
+</html>

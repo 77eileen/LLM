@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blog list</title>
+</head>
+<body>
+    블로그 리스트
+    <p>
+    {{posts.count}}개의 블로그가 있습니다.
+    </p>
+    <p>
+    {% for post in posts %}
+        <ul>
+            <li>
+                {{post.title}}
+            </li>
+        </ul>
+    {% endfor %}
+    </p>
+
+    <a href ="{% url 'blog:post_create' %}">등록하기</a>
+</body>
+</html>

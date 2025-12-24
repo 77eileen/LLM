@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세내용</title>
+    <link rel = 'stylesheet' href="{% static 'style.css' %}">
+</head>
+<body class="container">
+    {% if question %}
+        <p>{{question.content}}</p>
+        <p>{{question.create_at}}</p>
+    {% else %}
+        <p>존재하지 않는 질문입니다.</p>
+    {% endif %}
+    <hr>
+    <h5>{{question.answer_set.count}}개의 답변이 있습니다.</h5>
+    <ul>
+        {% for answer in question.answer_set.all %}
+            <li>{{question.content}}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h3>댓글</h3>
+    <form action="{% url 'blog:answer_create' question.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="content" rows="10" cols="40"></textarea>
+        <button type="submit">등록</button>
+    </form>
+</body>
+</html>

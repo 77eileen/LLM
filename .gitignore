@@ -103,9 +103,9 @@ Thumbs.db
 25backend/3bootstrap/bootstrap-4.0.0_samples
 25backend/3bootstrap/sample_burger_original
 25backend/3bootstrap/feane-1.0.0_T_sample_burger
-# 25backend/6Django/db.sqlite3
-# 25backend/6Django/blog/migrations
-# 25backend/6Django/blog/__pycache__
+25backend/6Django/db.sqlite3
+25backend/6Django/blog/migrations
+25backend/6Django/blog/__pycache__
 
 # ignore 확장자
 .jpg

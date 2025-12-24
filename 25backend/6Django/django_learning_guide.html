@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django 구조 이해하기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .architecture {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .flow-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .flow-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .flow-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .code-section {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .code-section pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .highlight {
+            color: #e06c75;
+        }
+        
+        .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: #e9ecef;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background: #dee2e6;
+        }
+        
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .connection-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .connection-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .step {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Django 구조 완벽 이해하기</h1>
+        
+        <div class="architecture">
+            <h2 style="color: #2c3e50; margin-bottom: 20px;">📊 MTV 아키텍처 흐름도</h2>
+            <div class="flow-diagram">
+                <div class="flow-box" onclick="showTab('urls')">
+                    <h3>1. URLs</h3>
+                    <p>경로 안내자</p>
+                    <small>어디로 갈지 결정</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-box" onclick="showTab('views')">
+                    <h3>2. Views</h3>
+                    <p>요청 처리자</p>
+                    <small>일을 처리</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-box" onclick="showTab('models')">
+                    <h3>3. Models</h3>
+                    <p>데이터 관리자</p>
+                    <small>DB와 소통</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-box" onclick="showTab('templates')">
+                    <h3>4. Templates</h3>
+                    <p>화면 설계자</p>
+                    <small>HTML 생성</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="connection-box">
+            <h3>💡 실제 예시: "질문 상세 보기" 동작 과정</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                사용자가 <strong>http://127.0.0.1:8000/blog/1/</strong> 입력
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>mysite/urls.py</strong>가 "/blog/"를 보고 → blog 앱의 urls.py로 전달
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>blog/urls.py</strong>가 "1/"을 보고 → detail 뷰 함수 호출 (question_id=1)
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>views.py의 detail 함수</strong>가 → models.py의 Question 모델로 DB 조회
+            </div>
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>models.py</strong>가 → 데이터베이스에서 id=1인 질문과 답변들 가져옴
+            </div>
+            <div class="step">
+                <span class="step-number">6</span>
+                <strong>views.py</strong>가 데이터를 → question_detail.html 템플릿에 전달
+            </div>
+            <div class="step">
+                <span class="step-number">7</span>
+                <strong>템플릿</strong>이 HTML 생성 → 사용자 브라우저에 표시
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('urls')">URLs 연결</button>
+            <button class="tab" onclick="showTab('views')">Views 로직</button>
+            <button class="tab" onclick="showTab('models')">Models 구조</button>
+            <button class="tab" onclick="showTab('templates')">Templates 렌더링</button>
+            <button class="tab" onclick="showTab('full')">전체 연결도</button>
+        </div>
+
+        <div id="urls" class="tab-content active">
+            <h2>🔗 URLs: 경로 매핑</h2>
+            <p><strong>역할:</strong> URL 주소를 보고 어느 View 함수를 실행할지 결정합니다.</p>
+            
+            <h3 style="margin-top: 20px;">mysite/urls.py (프로젝트 메인)</h3>
+            <div class="code-section">
+                <pre>
+<span class="highlight">from</span> django.urls <span class="highlight">import</span> path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('blog/', include('blog.urls')),  <span class="comment"># blog/로 시작하면 blog 앱으로!</span>
+]
+                </pre>
+            </div>
+
+            <h3>blog/urls.py (앱 내부)</h3>
+            <div class="code-section">
+                <pre>
+<span class="highlight">from</span> django.urls <span class="highlight">import</span> path
+<span class="highlight">from</span> . <span class="highlight">import</span> views
+
+app_name = 'blog'
+
+urlpatterns = [
+    path('', views.index),                    <span class="comment"># blog/</span>
+    path('&lt;int:question_id&gt;/', views.detail),   <span class="comment"># blog/1/</span>
+    path('register/answer/&lt;int:question_id&gt;/', views.answer_create),
+]
+                </pre>
+            </div>
+
+            <div class="connection-box">
+                <h3>연결 예시</h3>
+                <p>👉 <code>blog/5/</code> 접속 시:</p>
+                <p>1. mysite/urls.py가 "blog/" 감지</p>
+                <p>2. blog/urls.py로 넘어감</p>
+                <p>3. &lt;int:question_id&gt; 패턴이 5를 잡아냄</p>
+                <p>4. views.detail(request, question_id=5) 실행!</p>
+            </div>
+        </div>
+
+        <div id="views" class="tab-content">
+            <h2>⚙️ Views: 요청 처리 로직</h2>
+            <p><strong>역할:</strong> 실제 작업을 수행합니다. DB 조회, 계산, 템플릿 렌더링 등</p>
+
+            <div class="code-section">
+                <pre>
+<span class="highlight">from</span> django.shortcuts <span class="highlight">import</span> render
+<span class="highlight">from</span> .models <span class="highlight">import</span> Question
+
+<span class="comment"># 질문 목록 보기</span>
+<span class="highlight">def</span> index(request):
+    question_list = Question.objects.order_by('-create_at')  <span class="comment"># DB에서 질문 조회</span>
+    context = {'question_list': question_list}
+    <span class="highlight">return</span> render(request, 'blog/question_list.html', context)
+
+<span class="comment"># 질문 상세 보기</span>
+<span class="highlight">def</span> detail(request, question_id):
+    question = Question.objects.get(id=question_id)  <span class="comment"># 특정 질문 가져오기</span>
+    context = {'question': question}
+    <span class="highlight">return</span> render(request, 'blog/question_detail.html', context)
+
+<span class="comment"># 답변 등록</span>
+<span class="highlight">def</span> answer_create(request, question_id):
+    question = Question.objects.get(id=question_id)
+    question.answer_set.create(
+        content=request.POST.get('content'),
+        create_at=timezone.now()
+    )
+    <span class="highlight">return</span> redirect('blog:detail', question_id=question.id)
+                </pre>
+            </div>
+
+            <div class="connection-box">
+                <h3>View가 하는 일</h3>
+                <p>1. <strong>Models</strong>를 통해 데이터베이스에서 데이터 가져오기</p>
+                <p>2. 데이터 가공 (정렬, 필터링 등)</p>
+                <p>3. <strong>Templates</strong>에 데이터 전달하여 HTML 생성</p>
+                <p>4. 결과를 사용자에게 반환</p>
+            </div>
+        </div>
+
+        <div id="models" class="tab-content">
+            <h2>🗄️ Models: 데이터 구조 정의</h2>
+            <p><strong>역할:</strong> 데이터베이스 테이블 구조를 정의하고 데이터를 다룹니다.</p>
+
+            <div class="code-section">
+                <pre>
+<span class="highlight">from</span> django.db <span class="highlight">import</span> models
+
+<span class="comment"># 질문 테이블</span>
+<span class="highlight">class</span> Question(models.Model):
+    subject = models.CharField(max_length=200)     <span class="comment"># 제목</span>
+    content = models.TextField()                   <span class="comment"># 내용</span>
+    create_at = models.DateTimeField()             <span class="comment"># 작성일</span>
+
+<span class="comment"># 답변 테이블</span>
+<span class="highlight">class</span> Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    <span class="comment"># ↑ Question과 연결! 질문이 삭제되면 답변도 삭제</span>
+    content = models.TextField()
+    create_at = models.DateTimeField()
+                </pre>
+            </div>
+
+            <div class="connection-box">
+                <h3>ForeignKey의 마법 ✨</h3>
+                <p><strong>question.answer_set.all()</strong></p>
+                <p>→ 한 질문에 달린 모든 답변을 자동으로 가져옵니다!</p>
+                <p>→ Django가 자동으로 만들어주는 "역방향 관계"</p>
+                <br>
+                <p><strong>answer.question</strong></p>
+                <p>→ 답변이 속한 질문을 가져옵니다 (정방향 관계)</p>
+            </div>
+
+            <h3>데이터베이스와의 대화</h3>
+            <div class="code-section">
+                <pre>
+<span class="comment"># 모든 질문 가져오기</span>
+Question.objects.all()
+
+<span class="comment"># 특정 질문 가져오기</span>
+Question.objects.get(id=1)
+
+<span class="comment"># 최신순 정렬</span>
+Question.objects.order_by('-create_at')
+
+<span class="comment"># 질문의 답변들 가져오기</span>
+question.answer_set.all()
+                </pre>
+            </div>
+        </div>
+
+        <div id="templates" class="tab-content">
+            <h2>🎨 Templates: HTML 렌더링</h2>
+            <p><strong>역할:</strong> View에서 받은 데이터를 HTML에 표시합니다.</p>
+
+            <h3>question_list.html (질문 목록)</h3>
+            <div class="code-section">
+                <pre>
+&lt;h1&gt;질문목록&lt;/h1&gt;
+{% if question_list %}
+    &lt;ul&gt;
+    {% for question in question_list %}
+        &lt;li&gt;
+            &lt;a href="{% url 'blog:detail' question.id %}"&gt;
+                {{ question.subject }}  <span class="comment">&lt;!-- View에서 받은 데이터 --&gt;</span>
+            &lt;/a&gt;
+        &lt;/li&gt;
+    {% endfor %}
+    &lt;/ul&gt;
+{% else %}
+    &lt;p&gt;질문이 없습니다.&lt;/p&gt;
+{% endif %}
+                </pre>
+            </div>
+
+            <h3>question_detail.html (질문 상세)</h3>
+            <div class="code-section">
+                <pre>
+&lt;p&gt;{{ question.content }}&lt;/p&gt;
+&lt;p&gt;{{ question.create_at }}&lt;/p&gt;
+
+&lt;h5&gt;{{ question.answer_set.count }} 개의 답변&lt;/h5&gt;
+&lt;ul&gt;
+    {% for answer in question.answer_set.all %}
+        &lt;li&gt;{{ answer.content }}&lt;/li&gt;
+    {% endfor %}
+&lt;/ul&gt;
+
+<span class="comment">&lt;!-- 답변 작성 폼 --&gt;</span>
+&lt;form action="{% url 'blog:answer_create' question.id %}" method="post"&gt;
+    {% csrf_token %}
+    &lt;textarea name="content"&gt;&lt;/textarea&gt;
+    &lt;button type="submit"&gt;등록&lt;/button&gt;
+&lt;/form&gt;
+                </pre>
+            </div>
+
+            <div class="connection-box">
+                <h3>템플릿 태그 설명</h3>
+                <p><code>{{ 변수 }}</code> - 변수 출력</p>
+                <p><code>{% for %}</code> - 반복문</p>
+                <p><code>{% if %}</code> - 조건문</p>
+                <p><code>{% url %}</code> - URL 생성</p>
+                <p><code>{% csrf_token %}</code> - 보안 토큰</p>
+            </div>
+        </div>
+
+        <div id="full" class="tab-content">
+            <h2>🔄 전체 연결 흐름도</h2>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 10px; margin: 20px 0;">
+                <div style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">
+                    <strong>📱 사용자가 blog/1/ 접속</strong>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                        <strong>1️⃣ mysite/urls.py</strong>
+                        <p style="margin-top: 10px; color: #666;">
+                            "blog/"를 발견 → blog/urls.py로 위임
+                        </p>
+                        <div class="code-section" style="margin-top: 10px;">
+                            <pre>path('blog/', include('blog.urls'))</pre>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 2em; color: #667eea;">⬇️</div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                        <strong>2️⃣ blog/urls.py</strong>
+                        <p style="margin-top: 10px; color: #666;">
+                            "&lt;int:question_id&gt;" 패턴 매칭 → views.detail 호출
+                        </p>
+                        <div class="code-section" style="margin-top: 10px;">
+                            <pre>path('&lt;int:question_id&gt;/', views.detail)</pre>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 2em; color: #667eea;">⬇️</div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                        <strong>3️⃣ blog/views.py - detail 함수</strong>
+                        <p style="margin-top: 10px; color: #666;">
+                            Models를 통해 DB에서 데이터 조회
+                        </p>
+                        <div class="code-section" style="margin-top: 10px;">
+                            <pre>question = Question.objects.get(id=question_id)</pre>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 2em; color: #667eea;">⬇️</div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                        <strong>4️⃣ blog/models.py</strong>
+                        <p style="margin-top: 10px; color: #666;">
+                            Question 모델이 DB와 통신하여 데이터 반환
+                        </p>
+                        <div class="code-section" style="margin-top: 10px;">
+                            <pre>
+class Question(models.Model):
+    subject = models.CharField(max_length=200)
+    content = models.TextField()
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 2em; color: #667eea;">⬇️</div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                        <strong>5️⃣ templates/blog/question_detail.html</strong>
+                        <p style="margin-top: 10px; color: #666;">
+                            데이터를 받아서 HTML 생성
+                        </p>
+                        <div class="code-section" style="margin-top: 10px;">
+                            <pre>{{ question.subject }} - {{ question.content }}</pre>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 2em; color: #667eea;">⬇️</div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #28a745;">
+                        <strong>6️⃣ 브라우저에 HTML 표시</strong>
+                        <p style="margin-top: 10px; color: #666;">
+                            사용자가 질문과 답변을 볼 수 있음! ✅
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-box" style="margin-top: 30px;">
+                <h3>핵심 포인트 정리</h3>
+                <p>✅ <strong>URLs</strong>: 주소를 보고 어디로 갈지 안내</p>
+                <p>✅ <strong>Views</strong>: 실제 작업 수행 (DB 조회, 계산 등)</p>
+                <p>✅ <strong>Models</strong>: 데이터베이스와 소통하는 창구</p>
+                <p>✅ <strong>Templates</strong>: 데이터를 예쁜 HTML로 변환</p>
+                <p>✅ 모든 것은 <strong>settings.py</strong>에서 설정됨</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // 모든 탭과 콘텐츠 비활성화
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 선택된 탭과 콘텐츠 활성화
+            document.getElementById(tabName).classList.add('active');
+            
+            // 클릭된 탭 버튼 활성화
+            const clickedTab = Array.from(tabs).find(tab => 
+                tab.textContent.toLowerCase().includes(tabName) || 
+                (tabName === 'full' && tab.textContent.includes('전체'))
+            );
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
