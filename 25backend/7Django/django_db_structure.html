@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django 블로그 DB 구조</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .erd-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .model-box {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            min-width: 250px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .model-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .model-header {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: -20px -20px 15px -20px;
+            font-weight: bold;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .model-field {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9ff;
+            border-radius: 6px;
+            font-size: 0.95em;
+            border-left: 4px solid #667eea;
+        }
+        
+        .field-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .field-type {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .pk {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        
+        .fk {
+            background: #d1ecf1;
+            border-left-color: #0dcaf0;
+        }
+        
+        .m2m {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        
+        .relationship-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 12px;
+        }
+        
+        .relationship-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .relationship-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .code-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .badge-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .badge-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .badge-info {
+            background: #0dcaf0;
+            color: white;
+        }
+        
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: #f8f9ff;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            color: #667eea;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Django 블로그 데이터베이스 구조</h1>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff3cd; border: 2px solid #ffc107;"></div>
+                <span>Primary Key (PK)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #d1ecf1; border: 2px solid #0dcaf0;"></div>
+                <span>Foreign Key (FK)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #d4edda; border: 2px solid #28a745;"></div>
+                <span>Many-to-Many (M2M)</span>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('structure')">📊 구조</button>
+            <button class="tab" onclick="showTab('relationships')">🔗 관계</button>
+            <button class="tab" onclick="showTab('code')">💻 코드 예시</button>
+        </div>
+        
+        <div id="structure" class="tab-content active">
+            <div class="erd-container">
+                <div class="model-box">
+                    <div class="model-header">👤 User</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">username</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">email</span>
+                    </div>
+                    <div style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                        📝 Django 기본 제공 모델
+                    </div>
+                </div>
+                
+                <div class="model-box">
+                    <div class="model-header">📁 Category</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">name</span>
+                        <span class="badge badge-info">UNIQUE</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">description</span>
+                        <span class="field-type">TextField</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">created_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                </div>
+                
+                <div class="model-box">
+                    <div class="model-header">🏷️ Tag</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">name</span>
+                        <span class="badge badge-info">UNIQUE</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">created_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="erd-container">
+                <div class="model-box" style="min-width: 350px;">
+                    <div class="model-header">📝 Post (핵심 모델)</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">title</span>
+                        <span class="field-type">CharField(200)</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">content</span>
+                        <span class="field-type">TextField</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">author</span>
+                        <span class="badge badge-info">FK → User</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">category</span>
+                        <span class="badge badge-info">FK → Category</span>
+                    </div>
+                    <div class="model-field m2m">
+                        <span class="field-name">tags</span>
+                        <span class="badge badge-success">M2M → Tag</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">created_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">updated_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">published</span>
+                        <span class="field-type">Boolean</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">views</span>
+                        <span class="field-type">Integer</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="erd-container">
+                <div class="model-box">
+                    <div class="model-header">💬 Comment</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">post</span>
+                        <span class="badge badge-info">FK → Post</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">author</span>
+                        <span class="badge badge-info">FK → User</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">content</span>
+                        <span class="field-type">TextField</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">created_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                </div>
+                
+                <div class="model-box">
+                    <div class="model-header">🔖 Bookmark</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">post</span>
+                        <span class="badge badge-info">FK → Post</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">user</span>
+                        <span class="badge badge-info">FK → User</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">created_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                    <div style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                        🔒 unique_together: (post, user)
+                    </div>
+                </div>
+                
+                <div class="model-box">
+                    <div class="model-header">❤️ Like</div>
+                    <div class="model-field pk">
+                        <span class="field-name">id</span>
+                        <span class="badge badge-warning">PK</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">post</span>
+                        <span class="badge badge-info">FK → Post</span>
+                    </div>
+                    <div class="model-field fk">
+                        <span class="field-name">user</span>
+                        <span class="badge badge-info">FK → User</span>
+                    </div>
+                    <div class="model-field">
+                        <span class="field-name">created_at</span>
+                        <span class="field-type">DateTime</span>
+                    </div>
+                    <div style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                        🔒 unique_together: (post, user)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="relationships" class="tab-content">
+            <div class="relationship-info">
+                <div class="relationship-card">
+                    <h3>👤 User → Post (1:N)</h3>
+                    <p><strong>설명:</strong> 한 명의 유저가 여러 개의 글을 작성할 수 있습니다.</p>
+                    <p><strong>Django 코드:</strong></p>
+                    <div class="code-example">author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')</div>
+                    <p><strong>역참조:</strong> <code>user.posts.all()</code> - 유저가 작성한 모든 글</p>
+                    <p><strong>삭제 정책:</strong> User 삭제 시 → 모든 Post도 함께 삭제 (CASCADE)</p>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>📁 Category → Post (1:N)</h3>
+                    <p><strong>설명:</strong> 하나의 카테고리에 여러 개의 글이 속할 수 있습니다.</p>
+                    <p><strong>Django 코드:</strong></p>
+                    <div class="code-example">category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True, related_name='posts')</div>
+                    <p><strong>역참조:</strong> <code>category.posts.all()</code> - 카테고리의 모든 글</p>
+                    <p><strong>삭제 정책:</strong> Category 삭제 시 → Post의 category는 NULL로 설정 (SET_NULL)</p>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>🏷️ Tag ↔ Post (N:M)</h3>
+                    <p><strong>설명:</strong> 하나의 글에 여러 태그를 붙일 수 있고, 하나의 태그는 여러 글에 사용될 수 있습니다.</p>
+                    <p><strong>Django 코드:</strong></p>
+                    <div class="code-example">tags = models.ManyToManyField(Tag, blank=True, related_name='posts')</div>
+                    <p><strong>사용 예시:</strong></p>
+                    <div class="code-example">
+post.tags.add(tag1, tag2)  <span class="code-comment"># 글에 태그 추가</span><br>
+tag.posts.all()  <span class="code-comment"># 해당 태그가 붙은 모든 글</span>
+                    </div>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>📝 Post → Comment (1:N)</h3>
+                    <p><strong>설명:</strong> 하나의 글에 여러 개의 댓글이 달릴 수 있습니다.</p>
+                    <p><strong>Django 코드:</strong></p>
+                    <div class="code-example">post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')</div>
+                    <p><strong>역참조:</strong> <code>post.comments.all()</code> - 글의 모든 댓글</p>
+                    <p><strong>삭제 정책:</strong> Post 삭제 시 → 모든 Comment도 함께 삭제 (CASCADE)</p>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>🔖 Bookmark / ❤️ Like (중복 방지)</h3>
+                    <p><strong>설명:</strong> 한 유저는 같은 글에 북마크/좋아요를 단 한 번만 할 수 있습니다.</p>
+                    <p><strong>Django 코드:</strong></p>
+                    <div class="code-example">
+class Meta:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;unique_together = ('post', 'user')  <span class="code-comment"># 중복 방지</span>
+                    </div>
+                    <p><strong>사용 예시:</strong></p>
+                    <div class="code-example">
+post.bookmarks.count()  <span class="code-comment"># 북마크 개수</span><br>
+post.likes.count()  <span class="code-comment"># 좋아요 개수</span><br>
+user.bookmarks.all()  <span class="code-comment"># 유저가 북마크한 모든 글</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="code" class="tab-content">
+            <div class="relationship-info">
+                <div class="relationship-card">
+                    <h3>📝 글 작성하기</h3>
+                    <div class="code-example">
+<span class="code-comment"># 1. 새 글 작성</span><br>
+post = Post.objects.create(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;title="Django 튜토리얼",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;content="Django는 파이썬 웹 프레임워크입니다.",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;author=user,  <span class="code-comment"># User 객체</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;category=category,  <span class="code-comment"># Category 객체</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;published=True<br>
+)<br><br>
+<span class="code-comment"># 2. 태그 추가 (M2M)</span><br>
+post.tags.add(tag1, tag2, tag3)<br><br>
+<span class="code-comment"># 3. 조회수 증가</span><br>
+post.views += 1<br>
+post.save()
+                    </div>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>🔍 데이터 조회하기</h3>
+                    <div class="code-example">
+<span class="code-comment"># 1. 유저가 작성한 모든 글</span><br>
+user_posts = user.posts.all()<br><br>
+<span class="code-comment"># 2. 카테고리의 모든 글</span><br>
+category_posts = category.posts.filter(published=True)<br><br>
+<span class="code-comment"># 3. 태그가 붙은 글들</span><br>
+tagged_posts = tag.posts.all()<br><br>
+<span class="code-comment"># 4. 글의 모든 댓글</span><br>
+comments = post.comments.all().order_by('-created_at')<br><br>
+<span class="code-comment"># 5. 글의 좋아요 개수</span><br>
+like_count = post.likes.count()<br><br>
+<span class="code-comment"># 6. 유저가 좋아요한 글들</span><br>
+liked_posts = Post.objects.filter(likes__user=user)
+                    </div>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>💬 댓글 달기</h3>
+                    <div class="code-example">
+<span class="code-comment"># 댓글 작성</span><br>
+comment = Comment.objects.create(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;post=post,  <span class="code-comment"># Post 객체</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;author=user,  <span class="code-comment"># User 객체</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;content="좋은 글 감사합니다!"<br>
+)<br><br>
+<span class="code-comment"># 특정 글의 댓글 가져오기</span><br>
+post_comments = post.comments.all()
+                    </div>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>🔖 북마크 / ❤️ 좋아요</h3>
+                    <div class="code-example">
+<span class="code-comment"># 북마크 추가 (중복 체크)</span><br>
+bookmark, created = Bookmark.objects.get_or_create(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;post=post,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;user=user<br>
+)<br>
+if created:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("북마크 추가됨")<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("이미 북마크한 글입니다")<br><br>
+<span class="code-comment"># 좋아요 토글</span><br>
+like, created = Like.objects.get_or_create(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;post=post,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;user=user<br>
+)<br>
+if not created:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;like.delete()  <span class="code-comment"># 이미 좋아요한 경우 취소</span><br><br>
+<span class="code-comment"># 유저가 이 글을 좋아요 했는지 확인</span><br>
+has_liked = post.likes.filter(user=user).exists()
+                    </div>
+                </div>
+                
+                <div class="relationship-card">
+                    <h3>🔍 복잡한 쿼리 예시</h3>
+                    <div class="code-example">
+<span class="code-comment"># 1. 특정 카테고리의 인기 글 (좋아요 10개 이상)</span><br>
+popular_posts = Post.objects.filter(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;category=category,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;published=True<br>
+).annotate(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;like_count=Count('likes')<br>
+).filter(like_count__gte=10)<br><br>
+<span class="code-comment"># 2. 유저가 작성한 글 중 댓글이 많은 순</span><br>
+user_popular = user.posts.annotate(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;comment_count=Count('comments')<br>
+).order_by('-comment_count')<br><br>
+<span class="code-comment"># 3. 특정 태그를 가진 글들의 평균 조회수</span><br>
+from django.db.models import Avg<br>
+avg_views = tag.posts.aggregate(Avg('views'))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // 모든 탭 숨기기
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 모든 탭 버튼 비활성화
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // 선택된 탭 표시
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

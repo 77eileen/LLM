@@ -106,6 +106,9 @@ python manage.py runserver
 | Template | View       | 화면 |
 | View     | Controller | 로직 |
 
+template을 view에 갈아끼움.
+기존의 controller (fast api에서 라우터같은..) 가 없음 --> Django는 urls.py의 urlpatterns가 그 기능을 함
+
 ```text
 브라우저 요청
    ↓
