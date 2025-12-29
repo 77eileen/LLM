@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} 제품리스트  {% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'products:product_create' %}" class="btn btn-dark btn-sm">
+        + 제품 등록
+    </a>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>      
+      <th scope="col">제품명</th>
+      <th scope="col">가격</th>
+      <th scope="col">수량</th>
+      <th scope="col">비고</th>
+      <th scope="col">업데이트</th>
+    </tr>
+  </thead>
+  <tbody>    
+    {% for product in products%}
+    {% comment %} ajax로 호출할 때 클릭이벤트를 this로 받아서 사용. 그런데 동적생성이기 때문에 부모를 통해서 (이벤트 위임)방식을 사용 {% endcomment %}
+    <tr data-product-id="{{ product.id }}">  
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.description }}</td>
+        <td>
+          <a href="{% url 'products:product_edit' product.id %}" class="btn btn-primary btn-sm">수정</a>  {% comment %} get방식 {% endcomment %}
+          <form method="post"                                           
+          action= "{% url 'products:product_delete' product.id %}"
+          style="display:inline;"
+          onsubmit="return confirm ('정말 삭제 하시겠습니까?');">
+           {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+          </form>
+        </td>
+    </tr>
+    {% endfor %}
+    
+  </tbody>
+</table>    
+{% endblock %}
