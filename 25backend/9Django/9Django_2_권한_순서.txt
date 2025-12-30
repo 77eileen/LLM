@@ -1,0 +1,61 @@
+2025.12.30 권한설정
+=======================================================
+
+서버실행
+python manage.py runserver
+
+========================================================
+
+uvicorn main:app --reload				===> 8000번 포트로 연결
+
+uvicorn main:app --port 8001 --reload		===> 8001번 포트로 연결
+=======================================================
+
+
+
+1.
+FastAPI_app/
+add_sample_data2.py 생성 및 작성
+
+2. FastAPI_app 폴더에
+auth.py 파일 생성 및 작성
+
+
+3. FastAPI_app 폴더에
+models.py 에 사용자 모델 관련 클래스 추가 작성
+
+
+4.
+기존 products.db 삭제 후
+python add_sample_data2.py 실행
+
+5. 
+main.py 수정
+# 라우터 설정 추가
+# 인증관련 작성 중 --> schemas.py 에서 사용자 권한 관련 코드 추가 작성
+
+6. 
+uvicorn main:app --port 8001 --reload	
+유저추가해보기
+
+7.
+main.py 수정 작성
+@app.post 작성
+
+================================= fastAPI 완료
+
+Django
+
+8. config 폴더에서 urls.py 수정
+
+9. products 폴더에서
+view.py 수정
+
+10.
+forms.py 수정
+
+11.
+templates 폴더에서 registration폴더 만들고 register.html 생성 및 작성
+
+12.
+models.py  작성

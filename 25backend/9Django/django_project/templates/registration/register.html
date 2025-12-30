@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+<form method='POST'>
+    {% csrf_token %}
+    <div class = 'mb-3'>
+        <label for = "{{ form.username.id_for_label}}" class="form-label"> {{form.username.label}}</label>
+        {{ form.username }}
+    </div>
+
+    <div class = 'mb-3'>
+        <label for = "{{ form.email.id_for_label}}" class="form-label"> {{form.email.label}}</label>
+        {{ form.email }}
+    </div>
+
+    <div class = 'mb-3'>
+        <label for = "{{ form.first_name.id_for_label}}" class="form-label"> {{form.first_name.label}}</label>
+        {{ form.first_name }}
+    </div>
+
+    <div class = 'mb-3'>
+        <label for = "{{ form.last_name.id_for_label}}" class="form-label"> {{form.last_name.label}}</label>
+        {{ form.last_name }}
+    </div>
+
+    <div class = 'mb-3'>
+        <label for = "{{ form.password.id_for_label}}" class="form-label"> {{form.password.label}}</label>
+        {{ form.password }}
+    </div>
+
+    <div class = 'mb-3'>
+        <label for = "{{ form.password_confirm.id_for_label}}" class="form-label"> {{form.password_confirm.label}}</label>
+        {{ form.password_confirm }}
+    </div>
+
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+        <button type="submit" class="btn btn-primary btn-lg">회원가입</button>
+</form>
+<p class = "mb-0">로그인 <a href="{% url 'login' %}">로그인</a></p>
+{% endblock %}

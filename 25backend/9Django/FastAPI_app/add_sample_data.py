@@ -72,6 +72,7 @@ sample_products = [
     }
 ]
 
+
 def add_sample_data():
     db = SessionLocal()
     
