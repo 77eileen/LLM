@@ -1,0 +1,47 @@
+<!-- board/templates/board/post_detail.html -->
+
+{% extends 'board/base.html' %}
+
+{% block title %}{{ post.title }} - Django 게시판{% endblock %}
+
+{% block content %}
+<article>
+    <header style="border-bottom: 2px solid #ecf0f1; padding-bottom: 20px; margin-bottom: 30px;">
+        <h2 style="margin-bottom: 15px;">{{ post.title }}</h2>
+
+        <div style="display: flex; justify-content: space-between; color: #7f8c8d; font-size: 0.9em;">
+            <div>
+                <span>작성자: <strong>{{ post.author.username }}</strong></span>
+                <span style="margin-left: 20px;">조회수: {{ post.views }}</span>
+            </div>
+            <div>
+                <span>작성일: {{ post.created_at|date:"Y년 m월 d일 H:i" }}</span>
+                {% if post.is_updated %}
+                    <span style="margin-left: 10px; color: #e74c3c;">(수정됨: {{ post.updated_at|date:"Y-m-d H:i" }})</span>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div style="min-height: 300px; padding: 20px 0; line-height: 1.8;">
+        {{ post.content|linebreaks }}
+        {% comment %} 값을 가공해서 출력 {{ 값 | 필터 }} 줄바꿈(\n)을 html 태그로 변환 {% endcomment %}
+    </div>
+
+    <footer style="border-top: 1px solid #ecf0f1; padding-top: 20px; margin-top: 30px;">
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'board:list' %}" style="background-color: #95a5a6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+                목록으로
+            </a>
+            <!-- ⚠️ Part 4에서 구현될 예정입니다. 지금은 주석 처리하거나 Part 4를 먼저 완료하세요 -->
+            <!-- <a href="{% url 'board:update' post.pk %}" style="background-color: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+                수정
+            </a>
+            <a href="{% url 'board:delete' post.pk %}" style="background-color: #e74c3c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" onclick="return confirm('정말 삭제하시겠습니까?');">
+                                                                                                                                                                        {% comment %} 삭제버튼 클릭시 확인 메시지를 띄움 {% endcomment %}
+                삭제
+            </a> -->
+        </div>
+    </footer>
+</article>
+{% endblock %}

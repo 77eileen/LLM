@@ -1,0 +1,62 @@
+<!-- board/templates/board/post_list.html -->
+
+{% extends 'board/base.html' %}
+
+{% block title %}게시글 목록 - Django 게시판{% endblock %}
+
+{% block content %}
+<h2>게시글 목록</h2>
+
+<!-- ⚠️ Part 4에서 구현될 예정입니다. 지금은 주석 처리하거나 Part 4를 먼저 완료하세요 -->
+{% comment %} <div style="text-align: right; margin-bottom: 20px;">
+    <a href="{% url 'board:create' %}" style="background-color: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+        글쓰기
+    </a>
+</div> {% endcomment %}
+
+{% if posts %}  {% comment %} 게시글이 있을 때 표시할 내용{% endcomment %}
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #ecf0f1; border-bottom: 2px solid #bdc3c7;">
+                <th style="padding: 12px; text-align: center; width: 80px;">번호</th>
+                <th style="padding: 12px; text-align: left;">제목</th>
+                <th style="padding: 12px; text-align: center; width: 120px;">작성자</th>
+                <th style="padding: 12px; text-align: center; width: 100px;">조회수</th>
+                <th style="padding: 12px; text-align: center; width: 150px;">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            <tr style="border-bottom: 1px solid #ecf0f1;">
+                <td style="padding: 12px; text-align: center;">{{ post.pk }}</td>
+                <td style="padding: 12px;">
+                    <a href="{% url 'board:detail' post.pk %}" style="color: #2c3e50; text-decoration: none;">
+                        {{ post.title }}
+                        {% if post.is_updated %}
+                            <span style="color: #e74c3c; font-size: 0.8em;">[수정됨]</span>
+                        {% endif %}
+                    </a>
+                </td>
+                <td style="padding: 12px; text-align: center;">{{ post.author.username }}</td>
+                <td style="padding: 12px; text-align: center;">{{ post.views }}</td>
+                {% comment %} <td style="padding: 12px; text-align: center;">{{ post.created_at|date:"Y-m-d H:i" }}</td> {% endcomment %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="margin-top: 20px; color: #7f8c8d;">
+        총 <strong>{{ posts.count }}</strong>개의 게시글이 있습니다.
+    </p>
+{% else %} {% comment %} 게시글이 없을 때 표시할 내용{% endcomment %}
+    <p style="text-align: center; padding: 50px; color: #7f8c8d;">
+        아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!
+    </p>
+{% endif %}
+
+<!-- 템플릿 -->
+{{ post.title }}
+{% if post.is_new %}
+    <span style="color: #e74c3c;">NEW</span>
+{% endif %}
+{% endblock %}
