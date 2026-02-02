@@ -1,0 +1,72 @@
+
+# docker-compose 
+  # 컨테이너가 여러개 있을 때 불러오는 방식..?
+
+# 최상위 섹션
+  # service : 실행할 컨테이너 정의(db, app, web .. 등등)
+  # volumes : 데이터 저장소 정의
+  # networks : 컨테이너 간 통신을 위한 가상 네트워크 정의
+
+
+services:
+  # 1. MySQL Database
+  db:
+    image: mysql:8.4
+    container_name: fastapi_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} #관리자 비밀번호
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} #일반사용자비밀번호
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306" # 로컬 개발용 포트 노출
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]  # cmd 창에 mysqladmin ping -h localhost 입력하는것
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. FastAPI Backend
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: fastapi_app
+    restart: always
+    volumes:
+      - ./app:/app/app
+      - ./uploads:/app/uploads
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend-network
+
+  # 3. Nginx Web Server
+  web:
+    image: nginx:latest
+    container_name: fastapi_nginx
+    restart: always
+    ports:
+      - "80:80" # 외부 접근 포트
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./uploads:/app/uploads:ro # 읽기 전용으로 마운트
+    depends_on:
+      - app
+    networks:
+      - backend-network
+
+volumes:
+  mysql_data:
+
+networks:
+  backend-network:
+    driver: bridge #연결방식

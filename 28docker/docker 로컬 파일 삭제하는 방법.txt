@@ -1,0 +1,19 @@
+docker 로컬 파일 삭제하는 방법
+
+docker desktop 종료 후에 실행할 것 
+
+# 1. Docker 프로세스 강제 종료
+Stop-Process -Name "Docker Desktop" -Force -ErrorAction SilentlyContinue
+Stop-Process -Name "com.docker.backend" -Force -ErrorAction SilentlyContinue
+Stop-Process -Name "com.docker.proxy" -Force -ErrorAction SilentlyContinue
+
+# 2. WSL 종료
+wsl --shutdown
+
+# 3. 대기
+Start-Sleep -Seconds 5
+
+# 4. 삭제
+Remove-Item "C:\Users\playdata2\AppData\Local\Docker\wsl\disk\docker_data.vhdx" -Force
+Remove-Item "C:\Users\playdata2\AppData\Local\Docker\wsl\main\ext4.vhdx" -Force
+Remove-Item "C:\Users\playdata2\AppData\Local\wsl\{6d3f7bd4-efd2-4e31-8e4d-f766bb6319e9}\ext4.vhdx" -Force

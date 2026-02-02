@@ -1,0 +1,58 @@
+
+services:
+  # 1. MySQL Database
+  db:
+    image: mysql:8.4
+    container_name: fastapi_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306" # 로컬 개발용 포트 노출
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. FastAPI Backend
+  app:
+    image: sk20teacher/fastapi-server:v1
+    volumes:      
+      - ./uploads:/app/uploads
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy    
+    networks:
+      - backend-network
+
+  # 3. Nginx Web Server
+  web:
+    image: nginx:latest
+    container_name: fastapi_nginx
+    restart: always
+    ports:
+      - "80:80" # 외부 접근 포트
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./uploads:/app/uploads:ro # 읽기 전용으로 마운트
+    depends_on:
+      - app
+    networks:
+      - backend-network
+
+volumes:
+  mysql_data:
+
+networks:
+  backend-network:
+    driver: bridge
