@@ -1,0 +1,22 @@
+# OpenAI RAG System Requirements
+# 최신 버전 사용 (2024-2025 기준)
+
+# Core
+openai>=1.12.0
+python-dotenv>=1.0.0
+
+# LangChain (최신 stable)
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.20
+
+# Document Processing
+python-docx>=1.1.0
+pypdf>=4.0.0
+
+# Vector Store
+faiss-cpu>=1.7.4
+chromadb>=0.4.22
+
+# Utilities
+tiktoken>=0.5.2

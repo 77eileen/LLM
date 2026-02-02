@@ -60,6 +60,9 @@ Thumbs.db
 19LLM/results/
 19LLM/{C2857F97-6975-41D5-9909-A3EB11591652}.png
 
+# 프로젝트 
+30project4
+
 # env 파일
 .env
 *.env
